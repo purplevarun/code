@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="robots" content="noindex" />
+		<title>PurpleDSA</title>
+		<script>
+			// GitHub Pages serves this for unknown paths. The app is
+			// hash-routed, so bounce back to the project root where the
+			// SPA can take over.
+			location.replace(
+				location.origin +
+					"/" +
+					location.pathname.split("/")[1] +
+					"/#/" +
+					location.search +
+					location.hash,
+			);
+		</script>
+	</head>
+	<body></body>
+</html>
