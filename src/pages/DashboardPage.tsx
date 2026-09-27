@@ -2,13 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../app/Header";
 import { useAuth } from "../auth/AuthProvider";
-import {
-	countProblems,
-	GLOBAL_PROGRESS_SET_SLUG,
-	problemSets,
-} from "../data/problemSets";
-import { fetchAcceptedSubmissions } from "../lib/leetcodeApi";
+import { countProblems, problemSets } from "../data/problemSets";
 import { supabase, supabaseConfigError } from "../lib/supabase";
+import { syncUser, type SyncResultLine } from "../lib/sync";
 
 const tileDescriptions: Record<string, string> = {
 	"all-dsa-questions": "Every coding problem, without duplicates.",
@@ -21,11 +17,7 @@ const tileDescriptions: Record<string, string> = {
 	hld: "Amazon, Netflix, BookMyShow, and system design.",
 };
 
-type ProgressCountRow = {
-	setSlug: string;
-	problemSlug: string;
-	solved: boolean;
-};
+const today = () => new Date().toISOString().slice(0, 10);
 
 export const DashboardPage = () => {
 	const { user } = useAuth();
@@ -34,8 +26,10 @@ export const DashboardPage = () => {
 	>({});
 	const [syncing, setSyncing] = useState(false);
 	const [syncError, setSyncError] = useState("");
-	const [syncSuccess, setSyncSuccess] = useState("");
+	const [syncLines, setSyncLines] = useState<SyncResultLine[]>([]);
+	const [syncCount, setSyncCount] = useState<number | null>(null);
 	const [lastSyncedAt, setLastSyncedAt] = useState<string | null>(null);
+	const [nudgeDismissed, setNudgeDismissed] = useState(true);
 
 	const totalCountBySet = useMemo(() => {
 		return problemSets.reduce<Record<string, number>>((acc, set) => {
@@ -51,19 +45,18 @@ export const DashboardPage = () => {
 		}
 
 		const { data, error } = await supabase
-			.from("progress")
-			.select("setSlug, problemSlug, solved")
-			.eq("userId", user.id)
-			.eq("solved", true);
+			.from("users")
+			.select("problemsSolved")
+			.eq("id", user.id)
+			.single();
 
 		if (error) {
 			setSolvedCountBySet({});
 			return;
 		}
 
-		const rows = (data ?? []) as ProgressCountRow[];
 		const solvedCodeSet = new Set(
-			rows.filter((row) => row.solved).map((row) => row.problemSlug),
+			((data?.problemsSolved ?? []) as string[]).filter(Boolean),
 		);
 
 		const nextCounts = problemSets.reduce<Record<string, number>>(
@@ -96,6 +89,7 @@ export const DashboardPage = () => {
 	useEffect(() => {
 		if (!user) {
 			setLastSyncedAt(null);
+			setNudgeDismissed(true);
 			return;
 		}
 
@@ -103,21 +97,25 @@ export const DashboardPage = () => {
 		setLastSyncedAt(localStorage.getItem(key));
 	}, [user]);
 
-	const normalizeText = (value: string) => {
-		return value
-			.toLowerCase()
-			.replace(/[^a-z0-9]+/g, " ")
-			.trim();
-	};
+	// Once-a-day nudge to set a LeetCode handle when none is configured.
+	const showLeetcodeNudge = useMemo(() => {
+		if (!user || nudgeDismissed) return false;
+		return !(user.handles?.leetcode || "").trim();
+	}, [user, nudgeDismissed]);
 
-	const extractLeetCodeSlug = (url: string) => {
-		try {
-			const parsed = new URL(url);
-			const match = parsed.pathname.match(/\/problems\/([^/]+)/);
-			return match?.[1] || null;
-		} catch {
-			return null;
-		}
+	useEffect(() => {
+		if (!user) return;
+		const key = `purpledsa-lc-nudge-dismissed:${user.id}`;
+		setNudgeDismissed(localStorage.getItem(key) === today());
+	}, [user]);
+
+	const dismissNudge = () => {
+		if (!user) return;
+		localStorage.setItem(
+			`purpledsa-lc-nudge-dismissed:${user.id}`,
+			today(),
+		);
+		setNudgeDismissed(true);
 	};
 
 	const syncProgress = async (isAuto: boolean) => {
@@ -126,13 +124,11 @@ export const DashboardPage = () => {
 			return;
 		}
 
-		const cleanLeetCodeUsername = (
-			user.leetcodeUsername ||
-			user.username ||
-			""
-		).trim();
-		if (!cleanLeetCodeUsername) {
-			setSyncError("Set your LeetCode username in Settings first");
+		const configuredHandles = Object.values(user.handles ?? {}).some((h) =>
+			(h || "").trim(),
+		);
+		if (!configuredHandles) {
+			setSyncError("Add a platform handle in Settings first");
 			return;
 		}
 
@@ -144,97 +140,10 @@ export const DashboardPage = () => {
 		try {
 			setSyncing(true);
 			setSyncError("");
-			setSyncSuccess("");
+			setSyncLines([]);
+			setSyncCount(null);
 
-			const { submissions, publicSolvedCount } =
-				await fetchAcceptedSubmissions(cleanLeetCodeUsername, 5000);
-
-			const referencesBySlug = new Map<string, Set<string>>();
-			const referencesByTitle = new Map<string, Set<string>>();
-
-			for (const set of problemSets) {
-				for (const topic of set.topics) {
-					for (const problem of topic.problems) {
-						if (!problem.url.includes("leetcode.com/problems/"))
-							continue;
-
-						for (const slugKey of [
-							problem.code,
-							extractLeetCodeSlug(problem.url),
-						]) {
-							if (!slugKey) continue;
-							if (!referencesBySlug.has(slugKey)) {
-								referencesBySlug.set(slugKey, new Set());
-							}
-							referencesBySlug.get(slugKey)?.add(problem.code);
-						}
-
-						const titleKey = normalizeText(problem.name);
-						if (!referencesByTitle.has(titleKey)) {
-							referencesByTitle.set(titleKey, new Set());
-						}
-						referencesByTitle.get(titleKey)?.add(problem.code);
-					}
-				}
-			}
-
-			const solvedRows: Array<{
-				id: string;
-				userId: string;
-				setSlug: string;
-				problemSlug: string;
-				solved: boolean;
-				solvedAt: string;
-			}> = [];
-
-			const uniqueCodes = new Set<string>();
-			for (const item of submissions) {
-				const refsBySlug = item.titleSlug
-					? referencesBySlug.get(item.titleSlug) || new Set<string>()
-					: new Set<string>();
-				const refsByTitle = item.title
-					? referencesByTitle.get(normalizeText(item.title)) ||
-						new Set<string>()
-					: new Set<string>();
-
-				for (const problemCode of new Set([
-					...refsBySlug,
-					...refsByTitle,
-				])) {
-					if (uniqueCodes.has(problemCode)) continue;
-					uniqueCodes.add(problemCode);
-					solvedRows.push({
-						id: `${user.id}:${GLOBAL_PROGRESS_SET_SLUG}:${problemCode}`,
-						userId: user.id,
-						setSlug: GLOBAL_PROGRESS_SET_SLUG,
-						problemSlug: problemCode,
-						solved: true,
-						solvedAt: new Date().toISOString(),
-					});
-				}
-			}
-
-			if (solvedRows.length) {
-				const { error: upsertError } = await supabase
-					.from("progress")
-					.upsert(solvedRows, {
-						onConflict: "userId,setSlug,problemSlug",
-						ignoreDuplicates: true,
-					});
-
-				if (upsertError) {
-					const detail = (upsertError.message || "").toLowerCase();
-					if (
-						detail.includes("permission denied") ||
-						detail.includes("row-level security")
-					) {
-						throw new Error(
-							'Could not sync progress. Supabase permissions/policies are missing for table "progress".',
-						);
-					}
-					throw new Error("Could not sync progress");
-				}
-			}
+			const { lines, written } = await syncUser(user.id, user.handles);
 
 			await loadProgress();
 
@@ -245,14 +154,13 @@ export const DashboardPage = () => {
 			);
 			setLastSyncedAt(syncedAt);
 
-			const solvedCountHint =
-				publicSolvedCount === null
-					? "Public solved count unavailable."
-					: `Public solved count: ${publicSolvedCount}.`;
-
-			setSyncSuccess(
-				`${isAuto ? "Auto sync" : "Sync"} complete. Matched ${solvedRows.length} unique problems from ${submissions.length} recent accepted submissions fetched (max 20). ${solvedCountHint}`,
-			);
+			setSyncLines(lines);
+			setSyncCount(written);
+			if (!lines.length) {
+				setSyncError(
+					`${isAuto ? "Auto sync" : "Sync"}: no provider handles configured`,
+				);
+			}
 		} catch (err) {
 			setSyncError(
 				err instanceof Error ? err.message : "Could not sync progress",
@@ -266,12 +174,13 @@ export const DashboardPage = () => {
 		if (!user) return;
 
 		const key = `purpledsa-last-auto-sync-date:${user.id}`;
-		const today = new Date().toISOString().slice(0, 10);
+		const date = today();
 		const lastAutoSyncDate = localStorage.getItem(key);
-		if (lastAutoSyncDate === today) return;
+		if (lastAutoSyncDate === date) return;
 
-		localStorage.setItem(key, today);
+		localStorage.setItem(key, date);
 		syncProgress(true);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 
 	return (
@@ -282,15 +191,51 @@ export const DashboardPage = () => {
 				lastSyncedAt={lastSyncedAt}
 			/>
 
+			{showLeetcodeNudge && (
+				<div className="dashboard-status" role="status">
+					<p className="dashboard-status-success">
+						Add your LeetCode username to auto-sync progress.{" "}
+						<Link to="/settings">Set it up</Link>{" "}
+						<button
+							type="button"
+							onClick={dismissNudge}
+							style={{
+								background: "none",
+								border: "none",
+								color: "inherit",
+								cursor: "pointer",
+								textDecoration: "underline",
+								padding: 0,
+								font: "inherit",
+							}}
+						>
+							Remind me tomorrow
+						</button>
+					</p>
+				</div>
+			)}
+
 			<div className="dashboard-status" aria-live="polite">
 				{syncError && (
 					<p className="dashboard-status-error" title={syncError}>
 						{syncError}
 					</p>
 				)}
-				{syncSuccess && (
-					<p className="dashboard-status-success" title={syncSuccess}>
-						{syncSuccess}
+				{syncCount !== null && (
+					<p
+						className="dashboard-status-success"
+						title="Sync finished"
+					>
+						Sync complete — {syncCount} problem(s) marked.
+						{syncLines.map((line) => (
+							<span
+								key={line.provider}
+								style={{ display: "block" }}
+							>
+								{line.label}: {line.matched} matched
+								{line.note ? ` (${line.note})` : ""}
+							</span>
+						))}
 					</p>
 				)}
 			</div>
