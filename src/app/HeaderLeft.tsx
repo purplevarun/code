@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import iconUrl from "../assets/pdsa-icon.svg";
+import iconUrl from "../assets/code-icon.svg";
 
 const HeaderLeft = () => {
 	return (
-		<Link to="/" className="brand" aria-label="PurpleDSA Home">
-			<img src={iconUrl} alt="Purple DSA" />
+		<Link to="/" className="brand" aria-label="PurpleCode Home">
+			<img src={iconUrl} alt="PurpleCode" />
 		</Link>
 	);
 };

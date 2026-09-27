@@ -154,7 +154,7 @@ export const GlobalSearchProvider = ({ children }: { children: ReactNode }) => {
 			<dialog
 				ref={dialog}
 				className="global-search-dialog"
-				aria-label="Search PurpleDSA"
+				aria-label="Search PurpleCode"
 				onClose={() => setIsOpen(false)}
 				onCancel={(event) => {
 					event.preventDefault();
@@ -197,7 +197,7 @@ export const GlobalSearchProvider = ({ children }: { children: ReactNode }) => {
 								? `${id}-result-${selectedIndex}`
 								: undefined
 						}
-						placeholder="Search PurpleDSA"
+						placeholder="Search PurpleCode"
 						autoComplete="off"
 						spellCheck={false}
 						maxLength={160}

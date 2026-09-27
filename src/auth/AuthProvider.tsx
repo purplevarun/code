@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		const bootstrap = async () => {
 			try {
-				const saved = localStorage.getItem("purpledsa-user");
+				const saved = localStorage.getItem("purplecode-user");
 				if (saved) setUser(JSON.parse(saved));
 			} catch {
 				setUser(null);
@@ -140,7 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 		const nextUser = toUser(data);
 		setUser(nextUser);
-		localStorage.setItem("purpledsa-user", JSON.stringify(nextUser));
+		localStorage.setItem("purplecode-user", JSON.stringify(nextUser));
 	};
 
 	const signUp = async (
@@ -190,7 +190,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 		const sessionUser = toUser(nextUser);
 		setUser(sessionUser);
-		localStorage.setItem("purpledsa-user", JSON.stringify(sessionUser));
+		localStorage.setItem("purplecode-user", JSON.stringify(sessionUser));
 	};
 
 	const updateHandles = async (handles: Record<string, string>) => {
@@ -221,12 +221,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 		const nextUser = { ...user, handles, otherDetails: nextDetails };
 		setUser(nextUser);
-		localStorage.setItem("purpledsa-user", JSON.stringify(nextUser));
+		localStorage.setItem("purplecode-user", JSON.stringify(nextUser));
 	};
 
 	const signOut = async () => {
 		setUser(null);
-		localStorage.removeItem("purpledsa-user");
+		localStorage.removeItem("purplecode-user");
 	};
 
 	const value = useMemo(

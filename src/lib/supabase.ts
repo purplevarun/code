@@ -49,7 +49,7 @@ export const supabaseUrl = url;
 
 export const supabase = isSupabaseConfigured
 	? createClient(url, anonKey, {
-			db: { schema: "purpledsa" },
+			db: { schema: "purplecode" },
 			auth: {
 				persistSession: false,
 				autoRefreshToken: false,

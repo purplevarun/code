@@ -1,4 +1,4 @@
-# PurpleDSA
+# PurpleCode
 
 Track your DSA interview prep. Sign in, check off problems as you solve them across NeetCode 150 and a curated Top Interview Questions set, and climb the leaderboard.
 
@@ -12,17 +12,17 @@ Track your DSA interview prep. Sign in, check off problems as you solve them acr
 ## Tech stack
 
 - GitHub Pages for hosting (deployed via GitHub Actions)
-- Supabase Postgres and client (`purpledsa` schema in the shared supabase-common project)
+- Supabase Postgres and client (`purplecode` schema in the shared supabase-common project)
 - Supabase Edge Function for the LeetCode GraphQL proxy
 - Vite + React for the app shell
-- Custom credential auth using the `purpledsa.users` table
+- Custom credential auth using the `purplecode.users` table
 
 ## What you need for Supabase
 
-The app lives in a `purpledsa` schema inside the shared supabase-common project.
+The app lives in a `purplecode` schema inside the shared supabase-common project.
 
-1. Run the SQL in `supabase-schema.sql` in the project's SQL Editor. It creates the `purpledsa` schema, the `users` table, grants, RLS policies, and the RPC functions used by progress tracking.
-2. In Project Settings → API → Exposed schemas, add `purpledsa`.
+1. Run the SQL in `supabase-schema.sql` in the project's SQL Editor. It creates the `purplecode` schema, the `users` table, grants, RLS policies, and the RPC functions used by progress tracking.
+2. In Project Settings → API → Exposed schemas, add `purplecode`.
 3. Deploy the provider-sync edge function once: `supabase functions deploy sync --no-verify-jwt` (or paste `supabase/functions/sync/index.ts` in the dashboard with JWT verification off).
 4. Copy the project URL and publishable key into `.env` and the GitHub repo secrets.
 
@@ -94,19 +94,13 @@ If those values differ, local and production will point to different Supabase pr
 3. Push to `main` — `.github/workflows/deploy.yml` builds `dist/` and deploys it.
 4. The site serves from `/<repo-name>/` with hash-based routes (`/#/sets/...`).
 
-## Data migration (one-time)
+## Data migration
 
-Back up the old project and load it into `purpledsa.users`:
-
-```bash
-node scripts/migrate.mjs export                      # writes backup/*.json from .env creds
-NEW_SUPABASE_URL=... NEW_SUPABASE_KEY=... \
-  node scripts/migrate.mjs import --in backup/<file>.json --dry-run
-NEW_SUPABASE_URL=... NEW_SUPABASE_KEY=... \
-  node scripts/migrate.mjs import --in backup/<file>.json
-```
-
-Backup files contain password hashes — `backup/` is gitignored; keep them local.
+The one-time migration from the old Vercel-managed Supabase project was
+completed 2026-09-27 — all users, password hashes, and solved-progress
+arrays were imported into `purplecode.users` and verified. The local JSON
+backup under `backup/` is gitignored (it contains password hashes); keep
+it or delete it, it is not needed by the app.
 
 ## Notes
 
@@ -124,7 +118,7 @@ npm run build
 
 ## Problem data
 
-Free DSA Essentials is PurpleDSA's own collection of 100 coding exercises across nine topic groups. The former Striver/A2Z sheet has been removed, including its paid practice and lesson-only links. The collection is available at `/sets/free-dsa-essentials`.
+Free DSA Essentials is PurpleCode's own collection of 100 coding exercises across nine topic groups. The former Striver/A2Z sheet has been removed, including its paid practice and lesson-only links. The collection is available at `/sets/free-dsa-essentials`.
 
 | Platform      | Exercises | Progress       |
 | ------------- | --------: | -------------- |
@@ -146,7 +140,7 @@ Keep problem codes stable when correcting names or URLs because saved progress u
 
 The LLD sheet at `/sets/lld` contains 25 free judge-backed exercises across five groups: stateful APIs, caching and versioned state, bookings and transactions, services and editors, and concurrency. There are 24 LeetCode problems and [CodeZym's multithreaded hit counter](https://codezym.com/question/6-design-hit-counter-multithreaded). Each title and platform button opens the actual coding problem, and the platform filter separates the two judges. The old search-link prompts are no longer in the active catalog.
 
-These exercises judge functional behavior, not OO design quality or a complete open-ended LLD interview. For example, LeetCode's parking exercise manages capacity by car type, and its ATM exercise handles banknote deposits and withdrawals, not card authentication. Hints follow those specific contracts. A free judge account is required to submit. CodeZym's counter has multithreaded Java tests and single-threaded Python tests; LeetCode's supported languages vary by problem, especially for concurrency. LeetCode progress can sync; mark the CodeZym exercise manually in PurpleDSA.
+These exercises judge functional behavior, not OO design quality or a complete open-ended LLD interview. For example, LeetCode's parking exercise manages capacity by car type, and its ATM exercise handles banknote deposits and withdrawals, not card authentication. Hints follow those specific contracts. A free judge account is required to submit. CodeZym's counter has multithreaded Java tests and single-threaded Python tests; LeetCode's supported languages vary by problem, especially for concurrency. LeetCode progress can sync; mark the CodeZym exercise manually in PurpleCode.
 
 Access was reviewed on September 12, 2026 using [LeetCode's public catalog](https://leetcode.com/api/problems/all/) (`paid_only: false`) and [CodeZym's catalog](https://codezym.com/questionsApi/allQuestions) plus its [question metadata](https://codezym.com/questionsApi/question/6). CodeZym question 6 has `type: 0` and `isPrivate: false`; its public client allows signed-in free users to submit type-0 questions. **`isPrivate: false` alone does not mean free submissions**: type-1 problems such as parking lots, Splitwise, and elevators require premium and were excluded. LeetCode's premium bounded queue, file-system, and tic-tac-toe exercises were also excluded. No authenticated submissions were made during verification; access policies may change.
 

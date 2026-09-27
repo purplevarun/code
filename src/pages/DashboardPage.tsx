@@ -93,7 +93,7 @@ export const DashboardPage = () => {
 			return;
 		}
 
-		const key = `purpledsa-last-synced-at:${user.id}`;
+		const key = `purplecode-last-synced-at:${user.id}`;
 		setLastSyncedAt(localStorage.getItem(key));
 	}, [user]);
 
@@ -105,14 +105,14 @@ export const DashboardPage = () => {
 
 	useEffect(() => {
 		if (!user) return;
-		const key = `purpledsa-lc-nudge-dismissed:${user.id}`;
+		const key = `purplecode-lc-nudge-dismissed:${user.id}`;
 		setNudgeDismissed(localStorage.getItem(key) === today());
 	}, [user]);
 
 	const dismissNudge = () => {
 		if (!user) return;
 		localStorage.setItem(
-			`purpledsa-lc-nudge-dismissed:${user.id}`,
+			`purplecode-lc-nudge-dismissed:${user.id}`,
 			today(),
 		);
 		setNudgeDismissed(true);
@@ -149,7 +149,7 @@ export const DashboardPage = () => {
 
 			const syncedAt = new Date().toISOString();
 			localStorage.setItem(
-				`purpledsa-last-synced-at:${user.id}`,
+				`purplecode-last-synced-at:${user.id}`,
 				syncedAt,
 			);
 			setLastSyncedAt(syncedAt);
@@ -173,7 +173,7 @@ export const DashboardPage = () => {
 	useEffect(() => {
 		if (!user) return;
 
-		const key = `purpledsa-last-auto-sync-date:${user.id}`;
+		const key = `purplecode-last-auto-sync-date:${user.id}`;
 		const date = today();
 		const lastAutoSyncDate = localStorage.getItem(key);
 		if (lastAutoSyncDate === date) return;
