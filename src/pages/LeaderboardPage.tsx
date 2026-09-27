@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import Header from "../app/Header";
-import { countUniqueSolvedByUser, type ProgressRow } from "../lib/progress";
+import { uniqueSolvedCount } from "../lib/progress";
 import { supabase, supabaseConfigError } from "../lib/supabase";
 
 type LeaderboardUser = {
 	id: string;
 	username: string;
-	name?: string | null;
+	problemsSolved?: string[] | null;
+	otherDetails?: { name?: string } | null;
 };
 
 type LeaderboardEntry = {
@@ -32,29 +33,18 @@ export const LeaderboardPage = () => {
 					);
 				}
 
-				const [
-					{ data: users, error: userError },
-					{ data: progress, error: progressError },
-				] = await Promise.all([
-					supabase.from("user").select("id, username, name"),
-					supabase
-						.from("progress")
-						.select("userId, problemSlug, solved"),
-				]);
+				const { data: users, error: userError } = await supabase
+					.from("users")
+					.select("id, username, problemsSolved, otherDetails");
 
 				if (userError) throw new Error("Could not load users");
-				if (progressError) throw new Error("Could not load progress");
-
-				const solvedCountByUserId = countUniqueSolvedByUser(
-					(progress ?? []) as ProgressRow[],
-				);
 
 				const next = ((users ?? []) as LeaderboardUser[])
 					.map((u) => ({
 						id: u.id,
 						username: u.username,
-						name: u.name,
-						solvedCount: solvedCountByUserId.get(u.id) ?? 0,
+						name: u.otherDetails?.name ?? null,
+						solvedCount: uniqueSolvedCount(u.problemsSolved ?? []),
 					}))
 					.sort((a, b) => {
 						if (b.solvedCount !== a.solvedCount)

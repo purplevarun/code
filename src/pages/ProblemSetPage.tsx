@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import Header from "../app/Header";
 import { useAuth } from "../auth/AuthProvider";
-import { GLOBAL_PROGRESS_SET_SLUG, problemSets } from "../data/problemSets";
+import { problemSets } from "../data/problemSets";
 import {
 	getPracticePlatform,
 	practicePlatforms,
@@ -11,11 +11,6 @@ import {
 import { supabase, supabaseConfigError } from "../lib/supabase";
 
 const HldStudyView = lazy(() => import("./HldStudyView"));
-
-type ProgressRow = {
-	problemSlug: string;
-	solved: boolean;
-};
 
 export const ProblemSetPage = () => {
 	const { slug } = useParams();
@@ -34,10 +29,10 @@ export const ProblemSetPage = () => {
 			}
 
 			const { data, error } = await supabase
-				.from("progress")
-				.select("problemSlug, solved")
-				.eq("userId", user.id)
-				.eq("solved", true);
+				.from("users")
+				.select("problemsSolved")
+				.eq("id", user.id)
+				.single();
 
 			if (error) {
 				setSolvedCodes(new Set());
@@ -46,13 +41,7 @@ export const ProblemSetPage = () => {
 			}
 
 			setError("");
-			setSolvedCodes(
-				new Set(
-					((data ?? []) as ProgressRow[])
-						.filter((row) => row.solved)
-						.map((row) => row.problemSlug),
-				),
-			);
+			setSolvedCodes(new Set((data?.problemsSolved ?? []) as string[]));
 		};
 
 		loadSolved();
@@ -79,34 +68,12 @@ export const ProblemSetPage = () => {
 			return next;
 		});
 
-		let requestError: string | null = null;
-		if (currentlySolved) {
-			const { error: deleteError } = await supabase
-				.from("progress")
-				.delete()
-				.eq("userId", user.id)
-				.eq("problemSlug", problemCode);
+		const { error: rpcError } = await supabase.rpc(
+			currentlySolved ? "remove_solved" : "add_solved",
+			{ p_user_id: user.id, p_slug: problemCode },
+		);
 
-			if (deleteError) requestError = "Could not update progress";
-		} else {
-			const { error: upsertError } = await supabase
-				.from("progress")
-				.upsert(
-					[
-						{
-							id: `${user.id}:${GLOBAL_PROGRESS_SET_SLUG}:${problemCode}`,
-							userId: user.id,
-							setSlug: GLOBAL_PROGRESS_SET_SLUG,
-							problemSlug: problemCode,
-							solved: true,
-							solvedAt: new Date().toISOString(),
-						},
-					],
-					{ onConflict: "userId,setSlug,problemSlug" },
-				);
-
-			if (upsertError) requestError = "Could not update progress";
-		}
+		const requestError = rpcError ? "Could not update progress" : null;
 
 		if (requestError) {
 			setSolvedCodes((prev) => {
