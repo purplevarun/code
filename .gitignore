@@ -37,6 +37,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# local data backups (contain password hashes — never commit)
+backup/
+
 # vercel
 .vercel
 
