@@ -4,48 +4,64 @@ Track your DSA interview prep. Sign in, check off problems as you solve them acr
 
 - ✅ NeetCode 150 problem coverage
 - ✅ Top Interview Questions set
-- ✅ Username/password auth using a Supabase-backed `user` table
+- ✅ Username/password auth using a Supabase-backed `users` table
 - ✅ Leaderboard and progress tracking
 - ✅ Minimal dark/light mode UI
-- ✅ Designed to run on Vercel with Supabase Postgres
+- ✅ Static site on GitHub Pages with Supabase Postgres
 
 ## Tech stack
 
-- Vercel for hosting
-- Supabase Postgres and client
+- GitHub Pages for hosting (deployed via GitHub Actions)
+- Supabase Postgres and client (`purpledsa` schema in the shared supabase-common project)
+- Supabase Edge Function for the LeetCode GraphQL proxy
 - Vite + React for the app shell
-- Custom credential auth using the Supabase `user` table
+- Custom credential auth using the `purpledsa.users` table
 
 ## What you need for Supabase
 
-1. Create a new project at https://supabase.com
-2. Go to Project Settings → Database
-3. Copy the project URL and anon key
-4. Add them to `.env.local` and your hosting provider's environment variables
+The app lives in a `purpledsa` schema inside the shared supabase-common project.
+
+1. Run the SQL in `supabase-schema.sql` in the project's SQL Editor. It creates the `purpledsa` schema, the `users` table, grants, RLS policies, and the RPC functions used by progress tracking.
+2. In Project Settings → API → Exposed schemas, add `purpledsa`.
+3. Deploy the provider-sync edge function once: `supabase functions deploy sync --no-verify-jwt` (or paste `supabase/functions/sync/index.ts` in the dashboard with JWT verification off).
+4. Copy the project URL and publishable key into `.env` and the GitHub repo secrets.
+
+## Progress sync
+
+Sync is additive — it only ever marks problems solved, never unmarks them. Configure per-platform usernames in Settings:
+
+| Provider | Coverage |
+| --- | --- |
+| Codeforces | Full history (`user.status` API) |
+| SPOJ | Full solved list (public profile) |
+| GeeksforGeeks | Full solved list (practice API) |
+| CodeChef | Full submission history (paginated scrape) |
+| LeetCode | ~20 most recent accepted (public API limit) |
+| CSES / NeetCode / CodeZym / HLD | Manual checkmarks only |
 
 ## Required environment variables
 
-Create a `.env.local` file from `.env.example`:
+Create a `.env` file from `.env.example`:
 
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
 Then fill in the values:
 
 ```bash
 VITE_SUPABASE_URL="https://your-project.supabase.co"
-VITE_SUPABASE_ANON_KEY="your-anon-key"
+VITE_SUPABASE_PUBLISHABLE_KEY="your-publishable-key"
 ```
 
-The app also accepts `VITE_PUBLIC_SUPABASE_URL` and `VITE_PUBLIC_SUPABASE_ANON_KEY`. If both naming styles are set, the `VITE_PUBLIC_*` values take precedence.
+The app also accepts `VITE_PUBLIC_SUPABASE_URL`, `VITE_PUBLIC_SUPABASE_ANON_KEY`, and `VITE_SUPABASE_ANON_KEY`. `VITE_SYNC_URL` optionally overrides the provider-sync endpoint (default `${VITE_SUPABASE_URL}/functions/v1/sync`).
 
-These `VITE_*` values are bundled into the browser app. Use only the public anon key, never a Supabase service-role key.
+These `VITE_*` values are bundled into the browser app. Use only the public publishable/anon key, never a Supabase service-role key.
 
 Use the exact same values in both places if you want local and production to share one database:
 
-1. Local `.env.local`
-2. Vercel project environment variables
+1. Local `.env`
+2. GitHub repo secrets (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`)
 
 If those values differ, local and production will point to different Supabase projects.
 
@@ -57,10 +73,10 @@ If those values differ, local and production will point to different Supabase pr
     npm install
     ```
 
-2. Create `.env.local`:
+2. Create `.env`:
 
     ```bash
-    cp .env.example .env.local
+    cp .env.example .env
     ```
 
 3. Start the app:
@@ -71,20 +87,26 @@ If those values differ, local and production will point to different Supabase pr
 
 4. Open the app and sign in.
 
-## Supabase database setup
+## GitHub Pages deployment
 
-Create the required tables in the Supabase SQL editor.
+1. Repo Settings → Pages → Source: "GitHub Actions".
+2. Add repo secrets `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`.
+3. Push to `main` — `.github/workflows/deploy.yml` builds `dist/` and deploys it.
+4. The site serves from `/<repo-name>/` with hash-based routes (`/#/sets/...`).
 
-Run the SQL in `supabase-schema.sql` in the Supabase SQL Editor. It creates tables, indexes, grants, and RLS policies used by login and leaderboard queries.
+## Data migration (one-time)
 
-## Vercel deployment
+Back up the old project and load it into `purpledsa.users`:
 
-1. Push this repo to GitHub.
-2. Import it into Vercel.
-3. Add these environment variables in Vercel:
-    - `VITE_SUPABASE_URL`
-    - `VITE_SUPABASE_ANON_KEY`
-4. Deploy the app.
+```bash
+node scripts/migrate.mjs export                      # writes backup/*.json from .env creds
+NEW_SUPABASE_URL=... NEW_SUPABASE_KEY=... \
+  node scripts/migrate.mjs import --in backup/<file>.json --dry-run
+NEW_SUPABASE_URL=... NEW_SUPABASE_KEY=... \
+  node scripts/migrate.mjs import --in backup/<file>.json
+```
+
+Backup files contain password hashes — `backup/` is gitignored; keep them local.
 
 ## Notes
 
