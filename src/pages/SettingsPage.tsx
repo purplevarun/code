@@ -2,17 +2,18 @@ import { FormEvent, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Header from "../app/Header";
 import { useAuth } from "../auth/AuthProvider";
+import { PROVIDERS } from "../lib/providers";
 
 export const SettingsPage = () => {
-	const { user, loading, updateLeetCodeUsername, signOut } = useAuth();
-	const [leetcodeUsername, setLeetcodeUsername] = useState("");
+	const { user, loading, updateHandles, signOut } = useAuth();
+	const [handles, setHandles] = useState<Record<string, string>>({});
 	const [saving, setSaving] = useState(false);
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 
 	useEffect(() => {
 		if (!user) return;
-		setLeetcodeUsername(user.leetcodeUsername || user.username);
+		setHandles(user.handles ?? {});
 	}, [user]);
 
 	if (!loading && !user) {
@@ -25,7 +26,13 @@ export const SettingsPage = () => {
 			setSaving(true);
 			setError("");
 			setSuccess("");
-			await updateLeetCodeUsername(leetcodeUsername);
+			const cleaned = Object.fromEntries(
+				Object.entries(handles)
+					.map(([k, v]) => [k, v.trim()])
+					.filter(([, v]) => v),
+			);
+			await updateHandles(cleaned);
+			setHandles(cleaned);
 			setSuccess("Settings saved.");
 		} catch (err) {
 			setError(
@@ -47,26 +54,49 @@ export const SettingsPage = () => {
 
 				<section
 					className="settings-section"
-					aria-labelledby="leetcode-sync-heading"
+					aria-labelledby="handles-heading"
 				>
-					<h2 id="leetcode-sync-heading">LeetCode Sync</h2>
+					<h2 id="handles-heading">Platform Handles</h2>
+					<p style={{ color: "var(--muted)", marginTop: 0 }}>
+						Your usernames on each judge — used to auto-sync solved
+						problems. LeetCode syncs your ~20 most recent accepted
+						submissions; CSES and NeetCode are tracked manually.
+					</p>
 					<form onSubmit={onSubmit} className="settings-form">
-						<div className="settings-field">
-							<label htmlFor="leetcode-username">
-								LeetCode username
-							</label>
-							<input
-								id="leetcode-username"
-								value={leetcodeUsername}
-								onChange={(e) =>
-									setLeetcodeUsername(e.target.value)
-								}
-								disabled={saving}
-								placeholder={
-									user?.username || "your-leetcode-username"
-								}
-							/>
-						</div>
+						{PROVIDERS.map((provider) => (
+							<div className="settings-field" key={provider.id}>
+								<label htmlFor={`handle-${provider.id}`}>
+									{provider.label} username
+									{provider.mode === "partial" && (
+										<span
+											style={{
+												color: "var(--muted)",
+												fontWeight: "normal",
+											}}
+										>
+											{" "}
+											(recent only)
+										</span>
+									)}
+								</label>
+								<input
+									id={`handle-${provider.id}`}
+									value={handles[provider.id] ?? ""}
+									onChange={(e) =>
+										setHandles((prev) => ({
+											...prev,
+											[provider.id]: e.target.value,
+										}))
+									}
+									disabled={saving}
+									placeholder={
+										provider.id === "leetcode"
+											? (user?.username ?? "")
+											: ""
+									}
+								/>
+							</div>
+						))}
 
 						{error && (
 							<div role="alert" style={{ color: "crimson" }}>
@@ -85,7 +115,7 @@ export const SettingsPage = () => {
 								className="primary"
 								disabled={saving}
 							>
-								{saving ? "Saving..." : "Save username"}
+								{saving ? "Saving..." : "Save handles"}
 							</button>
 						</div>
 					</form>

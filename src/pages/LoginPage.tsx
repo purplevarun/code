@@ -8,6 +8,7 @@ export const LoginPage = () => {
 	>("username");
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [leetcodeUsername, setLeetcodeUsername] = useState("");
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const { checkUsernameExists, signIn, signUp, user } = useAuth();
@@ -34,7 +35,7 @@ export const LoginPage = () => {
 				if (password.length < 6) {
 					throw new Error("Password must be at least 6 characters");
 				}
-				await signUp(username, password);
+				await signUp(username, password, leetcodeUsername);
 				navigate("/");
 			}
 		} catch (err) {
@@ -84,6 +85,26 @@ export const LoginPage = () => {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								disabled={loading}
+							/>
+						</div>
+					)}
+
+					{isSignupStep && (
+						<div style={{ display: "grid", gap: 6 }}>
+							<label htmlFor="leetcode-username">
+								LeetCode username{" "}
+								<span style={{ color: "var(--muted)" }}>
+									(optional)
+								</span>
+							</label>
+							<input
+								id="leetcode-username"
+								value={leetcodeUsername}
+								onChange={(e) =>
+									setLeetcodeUsername(e.target.value)
+								}
+								disabled={loading}
+								placeholder="for automatic progress sync"
 							/>
 						</div>
 					)}
