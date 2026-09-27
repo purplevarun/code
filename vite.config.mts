@@ -3,6 +3,7 @@ import path from "node:path";
 import { defineConfig } from "vite";
 
 export default defineConfig({
+	base: "./",
 	plugins: [react()],
 	resolve: {
 		alias: {
@@ -11,17 +12,6 @@ export default defineConfig({
 	},
 	server: {
 		port: 4000,
-		proxy: {
-			"/api/leetcode": {
-				target: "https://leetcode.com",
-				changeOrigin: true,
-				secure: false,
-				rewrite: () => "/graphql",
-				headers: {
-					Referer: "https://leetcode.com",
-				},
-			},
-		},
 	},
 	preview: {
 		port: 4000,
