@@ -20,8 +20,11 @@ jobs:
                     exit 0
                   fi
 
-                  # A lightweight REST ping counts as activity and prevents
-                  # the free-tier project from being paused.
-                  curl -fsS "${SUPABASE_URL}/rest/v1/" \
+                  # A lightweight API ping counts as activity and prevents
+                  # the free-tier project from being paused. The bare /rest/v1/
+                  # root requires a secret key on the newer API gateway, so the
+                  # auth health endpoint is used instead (works with the
+                  # publishable key).
+                  curl -fsS "${SUPABASE_URL}/auth/v1/health" \
                     -H "apikey: ${SUPABASE_KEY}" \
-                    -o /dev/null -w "Supabase REST ping: %{http_code}\n"
+                    -o /dev/null -w "Supabase auth ping: %{http_code}\n"
