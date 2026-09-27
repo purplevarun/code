@@ -9,17 +9,19 @@ jobs:
     ping-supabase:
         runs-on: ubuntu-latest
         env:
-            SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+            SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+            SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
 
         steps:
-            - name: Install PostgreSQL client
-              run: sudo apt-get update && sudo apt-get install -y postgresql-client
-
-            - name: Keep the Supabase database warm
+            - name: Keep the Supabase project warm
               run: |
-                  if [ -z "${SUPABASE_DB_URL:-}" ]; then
-                    echo "SUPABASE_DB_URL secret is not set. Skipping keepalive."
+                  if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_KEY:-}" ]; then
+                    echo "SUPABASE_URL/SUPABASE_KEY secrets are not set. Skipping keepalive."
                     exit 0
                   fi
 
-                  psql "$SUPABASE_DB_URL" -v ON_ERROR_STOP=1 -c "SELECT 1;" -c "SELECT current_timestamp;"
+                  # A lightweight REST ping counts as activity and prevents
+                  # the free-tier project from being paused.
+                  curl -fsS "${SUPABASE_URL}/rest/v1/" \
+                    -H "apikey: ${SUPABASE_KEY}" \
+                    -o /dev/null -w "Supabase REST ping: %{http_code}\n"
