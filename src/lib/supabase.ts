@@ -8,6 +8,7 @@ const url = (
 const anonKey = (
 	import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY ||
 	import.meta.env.VITE_SUPABASE_ANON_KEY ||
+	import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
 	""
 ).trim();
 
@@ -32,7 +33,7 @@ const getUrlValidationError = (value: string) => {
 
 const getAnonKeyValidationError = (value: string) => {
 	if (!value)
-		return "Missing VITE_PUBLIC_SUPABASE_ANON_KEY (or VITE_SUPABASE_ANON_KEY).";
+		return "Missing VITE_PUBLIC_SUPABASE_ANON_KEY (or VITE_SUPABASE_ANON_KEY / VITE_SUPABASE_PUBLISHABLE_KEY).";
 	if (value === "your-anon-key") {
 		return "VITE_PUBLIC_SUPABASE_ANON_KEY is still using the example placeholder value.";
 	}
@@ -44,8 +45,11 @@ export const supabaseConfigError =
 
 export const isSupabaseConfigured = !supabaseConfigError;
 
+export const supabaseUrl = url;
+
 export const supabase = isSupabaseConfigured
 	? createClient(url, anonKey, {
+			db: { schema: "purpledsa" },
 			auth: {
 				persistSession: false,
 				autoRefreshToken: false,

@@ -12,7 +12,6 @@ import topInterviewRaw from "./problem_sets/top-interview.json?raw";
 
 export const ALL_DSA_SET_SLUG = "all-dsa-questions";
 export const FREE_PRACTICE_SET_SLUG = "free-dsa-essentials";
-export const GLOBAL_PROGRESS_SET_SLUG = "global";
 
 type ProblemRecord = {
 	id: string;
