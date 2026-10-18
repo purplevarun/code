@@ -7,6 +7,7 @@
 	--card: #f5f5f5;
 	--border: #d4d4d4;
 	--control-height: 40px;
+	--journey-accent: #087e67;
 }
 
 html.dark {
@@ -15,6 +16,7 @@ html.dark {
 	--muted: #a3a3a3;
 	--card: #111111;
 	--border: #404040;
+	--journey-accent: #6eddbb;
 }
 
 html {
@@ -96,6 +98,59 @@ a {
 	align-content: start;
 }
 
+.dashboard-section {
+	margin-bottom: 24px;
+}
+
+.dashboard-section:last-of-type {
+	flex: 1;
+}
+
+.dashboard-section > h2 {
+	font-size: 18px;
+	margin: 0 0 12px;
+}
+
+.dashboard-journeys {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.problem-set-icon {
+	flex-shrink: 0;
+}
+
+.dashboard-journeys .problem-set-icon {
+	color: var(--journey-accent);
+}
+
+.dashboard-journeys progress,
+.journey-progress progress {
+	display: block;
+	appearance: none;
+	width: 100%;
+	height: 4px;
+	border: none;
+	border-radius: 2px;
+	background: var(--border);
+	color: var(--journey-accent);
+	overflow: hidden;
+}
+
+.dashboard-journeys progress::-webkit-progress-bar,
+.journey-progress progress::-webkit-progress-bar {
+	background: var(--border);
+}
+
+.dashboard-journeys progress::-webkit-progress-value,
+.journey-progress progress::-webkit-progress-value {
+	background: var(--journey-accent);
+}
+
+.dashboard-journeys progress::-moz-progress-bar,
+.journey-progress progress::-moz-progress-bar {
+	background: var(--journey-accent);
+}
+
 .dashboard-set-link {
 	text-decoration: none;
 	color: inherit;
@@ -132,10 +187,17 @@ a {
 }
 
 .dashboard-set-card h3 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
 	font-size: 15px;
 	line-height: 1.25;
 	min-height: 2.5em;
 	overflow-wrap: anywhere;
+}
+
+.dashboard-set-card h3 span {
+	min-width: 0;
 }
 
 .dashboard-set-card p {

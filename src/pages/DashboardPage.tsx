@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../app/Header";
+import ProblemSetIcon from "../app/ProblemSetIcon";
 import { useAuth } from "../auth/AuthProvider";
 import { countProblems, problemSets } from "../data/problemSets";
 import { supabase, supabaseConfigError } from "../lib/supabase";
@@ -10,7 +11,6 @@ const tileDescriptions: Record<string, string> = {
 	"all-dsa-questions": "Every coding problem, without duplicates.",
 	"free-dsa-essentials": "100 free exercises across seven platforms.",
 	"neetcode-150": "Core interview patterns, step by step.",
-	"top-interview": "Frequently asked coding interview problems.",
 	"blind-75": "High-frequency interview fundamentals.",
 	cses: "Competitive programming essentials.",
 	lld: "Judged class design and concurrency practice.",
@@ -240,27 +240,72 @@ export const DashboardPage = () => {
 				)}
 			</div>
 
-			<div className="grid dashboard-grid">
-				{problemSets.map((set) => (
-					<Link
-						key={set.slug}
-						to={`/sets/${set.slug}`}
-						className="dashboard-set-link"
+			{[
+				{ title: "Journeys", journeys: true },
+				{ title: "Practice collections", journeys: false },
+			].map((section) => (
+				<section
+					key={section.title}
+					className="dashboard-section"
+					aria-label={section.title}
+				>
+					<h2>{section.title}</h2>
+					<div
+						className={`grid dashboard-grid ${section.journeys ? "dashboard-journeys" : ""}`}
 					>
-						<div className="card dashboard-set-card">
-							<h3>{set.title}</h3>
-							<p title={set.description}>
-								{tileDescriptions[set.slug] ?? set.description}
-							</p>
-							<small>
-								{solvedCountBySet[set.slug] || 0}/
-								{totalCountBySet[set.slug]} solved ·{" "}
-								{set.topics.length} topics
-							</small>
-						</div>
-					</Link>
-				))}
-			</div>
+						{problemSets
+							.filter(
+								(set) =>
+									Boolean(set.journey) === section.journeys &&
+									set.featured !== false,
+							)
+							.map((set) => (
+								<Link
+									key={set.slug}
+									to={`/sets/${set.slug}`}
+									className="dashboard-set-link"
+								>
+									<div className="card dashboard-set-card">
+										<h3>
+											<ProblemSetIcon slug={set.slug} />
+											<span>
+												{set.journey
+													? set.title.replace(
+															/ Journey$/,
+															"",
+														)
+													: set.title}
+											</span>
+										</h3>
+										<p title={set.description}>
+											{tileDescriptions[set.slug] ??
+												set.description}
+										</p>
+										<small>
+											{solvedCountBySet[set.slug] || 0}/
+											{totalCountBySet[set.slug]} solved ·{" "}
+											{set.topics.length}{" "}
+											{set.journey
+												? "milestones"
+												: "topics"}
+										</small>
+										{set.journey && (
+											<progress
+												value={
+													solvedCountBySet[
+														set.slug
+													] || 0
+												}
+												max={totalCountBySet[set.slug]}
+												aria-label={`${set.title} progress`}
+											/>
+										)}
+									</div>
+								</Link>
+							))}
+					</div>
+				</section>
+			))}
 
 			<footer className="dashboard-footer">
 				Built by{" "}

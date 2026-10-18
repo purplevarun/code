@@ -1,0 +1,152 @@
+{
+	"slug": "dynamic-programming-journey",
+	"title": "Dynamic Programming Journey",
+	"description": "State design, knapsack, grids, strings, stock states, interval splits, and memoized graph paths.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Arrays, recursion, and base cases",
+			"Time and space complexity",
+			"Basic graph traversal for the final milestone"
+		],
+		"outcome": "Define a sufficient state, derive transitions and base cases, then choose a dependency order before optimizing memory.",
+		"connections": {
+			"climbing-stairs": "Start by writing a recurrence for the last move. Memoization removes repeated calls; tabulation evaluates the same dependencies in increasing step order.",
+			"min-cost-climbing-stairs": "Keep the one-dimensional dependency graph, but replace counting with minimization. Define whether a state means reaching a step or paying for that step before writing the recurrence.",
+			"frog-jump": "Keep the same possible predecessors while making transition cost depend on both heights. The best previous total alone is insufficient without the cost of the chosen jump.",
+			"maximum-subarray": "Change the state to the best subarray ending at the current position. Either extend the previous answer or start again; the best ending here differs from the best seen anywhere.",
+			"maximum-product-subarray": "A negative multiplier reverses ordering, so the maximum-ending-here state needs a minimum-ending-here companion. This is an example of expanding state to preserve future-relevant information.",
+			"house-robber": "Return to take-or-skip choices, with taking an item forbidding its immediate predecessor. Distinguish the best answer for a prefix from a solution forced to include its last item.",
+			"house-robber-ii": "Reuse the linear robber solver twice. The circular constraint means the first and last houses cannot both participate, so solve the two possible endpoint exclusions.",
+			"decode-ways": "Switch from maximizing value to counting valid constructions. One- and two-character transitions look like stairs, but zeroes and the 1-to-26 range determine which edges exist.",
+			"cses-1158": "Book Shop is 0/1 knapsack: choose each book at most once under a price budget. Add a capacity dimension because two prefixes with different remaining budgets are not interchangeable.",
+			"subset-sum-equals-to-target": "Keep the one-use capacity recurrence but replace maximum pages with reachability. A boolean state records whether an exact target can be formed, not whether a budget can be underfilled.",
+			"partition-equal-subset-sum": "Reduce equal partition to the subset-sum solver. The total must be even, and finding one subset totaling half automatically determines the complementary subset.",
+			"target-sum": "Change boolean reachability into a count of signed assignments. Distinct choices involving zero still count separately; either track signed sums directly or derive a valid subset target.",
+			"last-stone-weight-ii": "Use subset partition to minimize the difference between two group totals. Unlike the heap-based stone-smashing exercise, always combining the largest stones is not the optimization argument here.",
+			"unbounded-knapsack": "Change exactly one modeling rule: an item may be reused. The take transition stays with the same item type, which reverses the safe iteration direction in a one-dimensional table.",
+			"rod-cutting": "Interpret reusable item weights as piece lengths and values as sale prices. The full rod length must be accounted for, so map array indices to physical lengths carefully.",
+			"coin-change": "Keep unlimited reuse and exact capacity, but minimize the number of selected items. Unreachable amounts need an impossible sentinel, not the zero used for valid empty selections.",
+			"coin-change-ii": "Replace minimum count with number of combinations. Coin-first iteration counts each multiset once; amount-first iteration can instead count different orders as different constructions.",
+			"unique-paths": "Move from a one-dimensional amount to a grid cell. The legal incoming directions define a two-dimensional counting recurrence and a straightforward row-by-row evaluation order.",
+			"unique-paths-ii": "Keep the same recurrence but delete blocked states. Obstacles also affect initialization, including the start, destination, first row, and first column.",
+			"minimum-path-sum": "Reuse the grid dependency order while switching counting to minimum accumulated cost. Each transition now adds the current cell value rather than combining path counts.",
+			"triangle": "The grid shape changes, but each cell still depends on a small set of neighbors. Bottom-up evaluation can eliminate awkward boundary branches at the triangle's edges.",
+			"minimum-falling-path-sum": "Allow three predecessor columns and any starting column. Use a fresh next row or preserve the previous row so updates do not consume partially overwritten states.",
+			"ninjas-training": "Replace a spatial column with the activity selected today. The previous activity is the state needed to enforce the no-repeat transition constraint across days.",
+			"longest-increasing-subsequence": "A transition may come from any earlier smaller value, not just neighboring indices. Begin with quadratic ending-at-index DP before considering the faster tails-array formulation.",
+			"longest-common-subsequence": "Use one prefix position per sequence. A character match extends both prefixes; otherwise dropping one end yields overlapping subproblems rather than a single greedy choice.",
+			"longest-palindromic-subsequence": "Apply subsequence reasoning to a palindrome. Matching interval endpoints can contribute together; unlike a substring problem, unmatched characters may be skipped.",
+			"distinct-subsequences": "Keep two prefix coordinates, but count the ways the source can form the target. Matching characters allow both using and skipping that source occurrence.",
+			"word-break": "Choose the last dictionary word of a prefix. The state is whether its preceding prefix is constructible, connecting string segmentation to the take-a-piece recurrences from coin problems.",
+			"longest-palindromic-substring": "Now contiguity is mandatory. An interval is palindromic only if its endpoints match and its interior is palindromic; center expansion is a useful alternative to the table.",
+			"palindromic-substrings": "Reuse palindrome recognition but count every valid interval instead of retaining only the longest one. Equal spellings at different positions are separate substrings here.",
+			"edit-distance": "Use two prefixes again, with insertion, deletion, and replacement edges carrying costs. Empty-prefix base cases represent real sequences of edits, not impossible states.",
+			"interleaving-string": "Track how much of each source has been consumed. Their prefix lengths determine the position in the target, so a third coordinate would store redundant information.",
+			"wildcard-matching": "Add pattern states to prefix matching. A star can consume nothing or one more input character, while a question mark consumes exactly one; initialize empty-input cases carefully.",
+			"regular-expression-matching": "Interview stretch: the star now repeats the preceding atom rather than matching arbitrary text by itself. Re-derive its transitions instead of copying the wildcard recurrence.",
+			"best-time-to-buy-and-sell-stock-ii": "Model trading with two states: holding a share or holding cash. Multiple transactions are allowed, but buying and selling must respect what the previous state actually owns.",
+			"best-time-to-buy-and-sell-stock-with-cooldown": "Expand the stock state because cash obtained by selling today cannot buy tomorrow. Track holding, just-sold, and resting states or encode the required lookback explicitly.",
+			"best-time-to-buy-and-sell-stock-with-transaction-fee": "Return to two trading states and add a transaction cost exactly once. Comparing this with cooldown separates a cost change from a change in legal transitions.",
+			"matrix-chain-multiplication": "Switch from choosing a next move to choosing the final split of an interval. Smaller intervals must be solved first, and matrix dimensions determine the cost of combining two results.",
+			"burst-balloons": "Reuse interval splitting, but choose which balloon is removed last. Its outside neighbors then remain fixed, making the left and right subintervals independent.",
+			"palindrome-partitioning-ii": "Combine palindrome recognition with prefix optimization. Precompute which intervals are palindromes, then minimize the cuts before the final palindromic piece.",
+			"longest-increasing-path-in-a-matrix": "Finish with memoization on an implicit DAG. Strictly increasing values prevent cycles, so the best path from a cell can be cached and reused by every predecessor."
+		}
+	},
+	"topics": [
+		{
+			"name": "Recurrences and state design",
+			"description": "Translate choices into states, base cases, memoization, and tabulation before compressing memory.",
+			"problemCodes": [
+				"climbing-stairs",
+				"min-cost-climbing-stairs",
+				"frog-jump",
+				"maximum-subarray",
+				"maximum-product-subarray",
+				"house-robber",
+				"house-robber-ii",
+				"decode-ways"
+			]
+		},
+		{
+			"name": "0/1 choices and subset targets",
+			"description": "Distinguish maximizing value, exact reachability, counting choices, and minimizing a partition difference.",
+			"problemCodes": [
+				"cses-1158",
+				"subset-sum-equals-to-target",
+				"partition-equal-subset-sum",
+				"target-sum",
+				"last-stone-weight-ii"
+			]
+		},
+		{
+			"name": "Unbounded choices and coin patterns",
+			"description": "Allow reuse deliberately and make loop order match combinations rather than permutations.",
+			"problemCodes": [
+				"unbounded-knapsack",
+				"rod-cutting",
+				"coin-change",
+				"coin-change-ii"
+			]
+		},
+		{
+			"name": "Grids and constrained transitions",
+			"description": "Change dimensions, obstacles, costs, and legal predecessors without losing the state invariant.",
+			"problemCodes": [
+				"unique-paths",
+				"unique-paths-ii",
+				"minimum-path-sum",
+				"triangle",
+				"minimum-falling-path-sum",
+				"ninjas-training"
+			]
+		},
+		{
+			"name": "Subsequence families",
+			"description": "Preserve order while allowing gaps, then change optimization into counting.",
+			"problemCodes": [
+				"longest-increasing-subsequence",
+				"longest-common-subsequence",
+				"longest-palindromic-subsequence",
+				"distinct-subsequences"
+			]
+		},
+		{
+			"name": "String prefixes, intervals, and matching",
+			"description": "Separate segmentation, contiguous palindromes, edit operations, and pattern semantics.",
+			"problemCodes": [
+				"word-break",
+				"longest-palindromic-substring",
+				"palindromic-substrings",
+				"edit-distance",
+				"interleaving-string",
+				"wildcard-matching",
+				"regular-expression-matching"
+			]
+		},
+		{
+			"name": "Stock state machines",
+			"description": "Track ownership and legal transactions, then distinguish cooldown constraints from fees.",
+			"problemCodes": [
+				"best-time-to-buy-and-sell-stock-ii",
+				"best-time-to-buy-and-sell-stock-with-cooldown",
+				"best-time-to-buy-and-sell-stock-with-transaction-fee"
+			]
+		},
+		{
+			"name": "Interval splits and partition costs",
+			"description": "Choose a final split or final action so independently solved subproblems can be combined.",
+			"problemCodes": [
+				"matrix-chain-multiplication",
+				"burst-balloons",
+				"palindrome-partitioning-ii"
+			]
+		},
+		{
+			"name": "Memoization on a DAG",
+			"description": "Recognize an acyclic dependency graph even when it is represented as a matrix.",
+			"problemCodes": ["longest-increasing-path-in-a-matrix"]
+		}
+	]
+}

@@ -1,0 +1,117 @@
+{
+	"slug": "arrays-strings-journey",
+	"title": "Arrays & Strings Journey",
+	"description": "Array updates, hashing, prefix sums, two pointers, sliding windows, and matrix traversal.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Loops, indices, and basic strings",
+			"Basic complexity analysis"
+		],
+		"outcome": "Choose a scanning invariant and the smallest useful state instead of repeatedly rescanning an array or string.",
+		"connections": {
+			"remove-element": "Begin with separate read and write positions. The processed prefix contains exactly the values kept so far, even when the input array is modified in place.",
+			"remove-duplicates-from-sorted-array": "Keep the read/write invariant but use sorted order to recognize duplicates locally. Compare against the last retained value rather than building a second collection.",
+			"move-zeroes": "Preserve the relative order of retained values while moving rejected zeroes to the suffix. This adds a stable-order requirement to the same compaction technique.",
+			"contains-duplicate": "Now sorted order is unavailable. A set remembers earlier values so each arrival can be checked without scanning the entire processed prefix.",
+			"valid-anagram": "A set loses multiplicity, so replace membership with character counts. Equality of frequency tables captures the relationship without depending on original order.",
+			"two-sum": "Store a useful lookup key rather than every possible pair. Each value asks whether its complement has appeared, and indices must come from two distinct positions.",
+			"group-anagrams": "Promote the anagram frequency signature into a grouping key. Many pairwise comparisons become one hash lookup per word, with a collision-free signature representation.",
+			"longest-consecutive-sequence": "Use the set to identify sequence starts, not merely neighbors. Iterate unique values and only expand from a value whose predecessor is absent to avoid repeated walks.",
+			"majority-element": "Frequency counting supplies a direct solution; the strict majority guarantee also permits pair cancellation with one candidate and a balance counter. State the guarantee before using that shortcut.",
+			"encode-and-decode-strings": "Move from comparing string signatures to preserving exact string boundaries. An unambiguous length-prefixed format can represent separators inside words and empty strings without losing information.",
+			"find-the-index-of-the-first-occurrence-in-a-string": "Now compare a pattern against consecutive text positions. After a partial match fails, KMP's prefix table reuses a suffix that is also a pattern prefix instead of restarting every comparison.",
+			"product-of-array-except-self": "Replace repeated exclusion scans with prefix and suffix summaries. Combining the two sides answers each position without division and naturally handles zeroes.",
+			"maximum-subarray": "Summarize the useful history in one best-ending-here value. A harmful prefix can be discarded, while a separate best-so-far value records the global answer.",
+			"count-subarrays-with-given-sum": "Use differences between prefix sums to describe every subarray. A frequency map counts earlier prefixes that would make the current interval sum equal the target.",
+			"largest-subarray-with-sum-0": "Reuse prefix differences, but store the earliest index instead of a frequency. Equal prefix sums bound a zero-sum interval, and the earliest occurrence maximizes its length.",
+			"valid-palindrome": "Move to two ends of the same sequence. Skip characters outside the comparison rule and shrink the unchecked interval only after its endpoints agree.",
+			"two-sum-ii-input-array-is-sorted": "Replace Two Sum's hash map with sorted-order decisions. If the endpoint sum is too small or too large, one pointer movement eliminates a provably useless candidate.",
+			"3sum": "Fix one value, then reuse the sorted two-pointer pair solver on the suffix. Deduplicate both the fixed value and successful pairs without removing legitimate combinations.",
+			"container-with-most-water": "Keep two endpoints, but optimize an area rather than an exact sum. Moving the taller wall cannot improve the current limiting height, which justifies discarding the shorter wall.",
+			"maximum-average-subarray-i": "Start sliding windows with a fixed width. Add the entering value and subtract the leaving value instead of recomputing every window sum.",
+			"longest-substring-without-repeating-characters": "Let the window width vary while preserving a validity condition. Move its left edge until the incoming character no longer duplicates one already inside.",
+			"minimum-size-subarray-sum": "Change the objective from the longest valid window to the shortest window reaching a sum. Positivity makes shrinking and expanding monotonic; negative values would invalidate this reasoning.",
+			"permutation-in-string": "Combine fixed-size windows with anagram frequency counts. A window is a permutation only when its multiplicities match, not just its distinct characters.",
+			"longest-repeating-character-replacement": "Measure invalidity as window length minus the most frequent character count. The replacement budget determines whether the current window can be made uniform.",
+			"minimum-window-substring": "Combine variable-width shrinking with required multiplicities. Track how many requirements are satisfied and shrink only while the whole target remains covered.",
+			"rotate-image": "Extend in-place reasoning to two dimensions. A transpose followed by row reversal expresses a clockwise rotation without assigning over values that are still needed.",
+			"spiral-matrix": "Replace pointer endpoints with four shrinking boundaries. Finish one edge at a time and recheck boundaries before traversing the opposite edge of a thin remainder.",
+			"set-matrix-zeroes": "Use existing matrix cells as compact marker storage. Separate the first row and column's original state so markers do not destroy the information they represent.",
+			"game-of-life": "The next state depends on the entire previous generation. Encode old and new cell states separately during an in-place pass so earlier writes cannot affect later neighbor counts."
+		}
+	},
+	"topics": [
+		{
+			"name": "In-place array foundations",
+			"description": "Maintain a processed prefix while compacting or rearranging values without losing order.",
+			"problemCodes": [
+				"remove-element",
+				"remove-duplicates-from-sorted-array",
+				"move-zeroes"
+			]
+		},
+		{
+			"name": "Hashing, counts, and signatures",
+			"description": "Replace rescanning with membership, frequency, complement, and canonical-key lookups.",
+			"problemCodes": [
+				"contains-duplicate",
+				"valid-anagram",
+				"two-sum",
+				"group-anagrams",
+				"longest-consecutive-sequence",
+				"majority-element"
+			]
+		},
+		{
+			"name": "String boundaries and pattern matching",
+			"description": "Preserve string identity during encoding and reuse matched-prefix information during substring search.",
+			"problemCodes": [
+				"encode-and-decode-strings",
+				"find-the-index-of-the-first-occurrence-in-a-string"
+			]
+		},
+		{
+			"name": "Prefix summaries and subarrays",
+			"description": "Reuse information from earlier positions to count, optimize, or exclude intervals.",
+			"problemCodes": [
+				"product-of-array-except-self",
+				"maximum-subarray",
+				"count-subarrays-with-given-sum",
+				"largest-subarray-with-sum-0"
+			]
+		},
+		{
+			"name": "Two-pointer elimination",
+			"description": "Use symmetry or sorted order to discard candidates with a correctness argument.",
+			"problemCodes": [
+				"valid-palindrome",
+				"two-sum-ii-input-array-is-sorted",
+				"3sum",
+				"container-with-most-water"
+			]
+		},
+		{
+			"name": "Fixed and variable sliding windows",
+			"description": "Choose the window invariant before deciding when to expand, shrink, or record an answer.",
+			"problemCodes": [
+				"maximum-average-subarray-i",
+				"longest-substring-without-repeating-characters",
+				"minimum-size-subarray-sum",
+				"permutation-in-string",
+				"longest-repeating-character-replacement",
+				"minimum-window-substring"
+			]
+		},
+		{
+			"name": "Matrices and in-place state",
+			"description": "Generalize boundaries and auxiliary markers to two-dimensional transformations.",
+			"problemCodes": [
+				"rotate-image",
+				"spiral-matrix",
+				"set-matrix-zeroes",
+				"game-of-life"
+			]
+		}
+	]
+}

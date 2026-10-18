@@ -13,8 +13,24 @@ case "$1" in
     shift
     npm run format -- "$@"
     ;;
+  test)
+    shift
+    npm exec -- tsc --project tests/tsconfig.json
+    if [[ $# -eq 0 ]]; then
+      set -- tests/*.test.ts
+    fi
+    node --experimental-strip-types --test "$@"
+    ;;
+  build)
+    shift
+    npm run build -- "$@"
+    ;;
+  git)
+    shift
+    git "$@"
+    ;;
   *)
-    echo "Usage: ./run dev|format" >&2
+    echo "Usage: ./run dev|format|test|build|git" >&2
     exit 1
     ;;
 esac

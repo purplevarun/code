@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { GlobalSearchProvider } from "./app/GlobalSearch";
+import JourneyAnnouncement from "./app/JourneyAnnouncement";
 import { AuthProvider } from "./auth/AuthProvider";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LeaderboardPage } from "./pages/LeaderboardPage";
@@ -11,6 +12,7 @@ const App = () => {
 	return (
 		<AuthProvider>
 			<GlobalSearchProvider>
+				<JourneyAnnouncement />
 				<Routes>
 					<Route path="/login" element={<LoginPage />} />
 					<Route path="/" element={<DashboardPage />} />

@@ -1,0 +1,66 @@
+{
+	"slug": "greedy-intervals-journey",
+	"title": "Greedy & Intervals Journey",
+	"description": "Greedy choice arguments, reachability, scheduling, interval merging, and overlap queries.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Sorting, arrays, and two pointers",
+			"Heap basics for deadline and overlap problems"
+		],
+		"outcome": "Explain why a local choice is safe, and make endpoint and overlap conventions explicit before processing intervals.",
+		"connections": {
+			"jump-game": "Track the farthest position reachable from the processed prefix. An unreachable index cannot contribute a jump, so expanding the frontier requires a clear feasibility invariant.",
+			"jump-game-ii": "Keep the same reachability frontier but group positions by number of jumps. Finishing one reachable layer commits one jump and moves to the farthest next frontier.",
+			"gas-station": "Use a failed prefix to eliminate several starting candidates at once. A negative running balance invalidates every start inside that failed segment, while total fuel still determines overall feasibility.",
+			"candy": "One directional greedy pass cannot satisfy constraints from both neighbors. Combine left-to-right and right-to-left requirements without erasing a larger requirement from the other direction.",
+			"hand-of-straights": "Choose the smallest remaining value because it cannot belong after a missing smaller value in its group. Consume one consecutive group at a time while respecting duplicate counts.",
+			"partition-labels": "Extend the current segment until it includes the final occurrence of every character already inside it. Cutting before that boundary would violate the partition constraint.",
+			"fractional-knapsack": "Use value per unit weight only because fractions are allowed. Contrast this exchange argument with 0/1 knapsack, where indivisible choices can invalidate the same greedy ordering.",
+			"job-sequencing": "Add deadlines to valuable unit-time choices. Sorting by deadline and retaining the strongest feasible profit set in a min-heap separates scheduling feasibility from profit priority.",
+			"merge-intervals": "Sort by interval start so only the latest merged range can overlap the next range. Preserve the maximum end rather than assuming later input has a later endpoint.",
+			"insert-interval": "Reuse merging when the existing intervals are already sorted and disjoint. Copy ranges before the insertion, merge the overlap block, then append the untouched suffix.",
+			"non-overlapping-intervals": "Change the objective from representing the union to selecting compatible intervals. Keeping the earliest finish leaves the most room for future choices and yields minimum removals.",
+			"meeting-rooms": "Use sorted adjacent comparisons to test whether one resource can serve every interval. Decide explicitly whether a meeting ending at a time can share a room with one starting then.",
+			"meeting-rooms-ii": "Replace the one-room feasibility question with peak simultaneous demand. A heap of ending times or a sorted event sweep tracks how many resources remain occupied.",
+			"minimum-interval-to-include-each-query": "Interview stretch: answer point queries offline in sorted order. A heap ranks eligible intervals by length while their right endpoints determine when they expire."
+		}
+	},
+	"topics": [
+		{
+			"name": "Safe local choices",
+			"description": "Use reachability, failed prefixes, and necessary boundaries to justify greedy decisions.",
+			"problemCodes": [
+				"jump-game",
+				"jump-game-ii",
+				"gas-station",
+				"candy",
+				"hand-of-straights",
+				"partition-labels"
+			]
+		},
+		{
+			"name": "Value and scheduling tradeoffs",
+			"description": "State the assumptions that make a ratio or a deadline-based selection rule valid.",
+			"problemCodes": ["fractional-knapsack", "job-sequencing"]
+		},
+		{
+			"name": "Merge and select intervals",
+			"description": "Separate representing overlapping ranges from selecting a compatible subset of them.",
+			"problemCodes": [
+				"merge-intervals",
+				"insert-interval",
+				"non-overlapping-intervals"
+			]
+		},
+		{
+			"name": "Resources and offline queries",
+			"description": "Track active intervals, endpoint conventions, and the best currently eligible answer.",
+			"problemCodes": [
+				"meeting-rooms",
+				"meeting-rooms-ii",
+				"minimum-interval-to-include-each-query"
+			]
+		}
+	]
+}

@@ -64,12 +64,21 @@ export interface Problem {
 
 export interface ProblemTopic {
 	name: string;
+	description?: string;
 	problems: Problem[];
+}
+
+export interface LearningJourney {
+	prerequisites: string[];
+	outcome: string;
+	connections: Record<string, string>;
 }
 
 export interface ProblemSet {
 	slug: string;
 	title: string;
 	description: string;
+	featured?: boolean;
+	journey?: LearningJourney;
 	topics: ProblemTopic[];
 }

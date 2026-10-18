@@ -1,6 +1,7 @@
 {
 	"slug": "top-interview",
 	"title": "Top Interview Questions",
+	"featured": false,
 	"description": "Frequently-asked SWE interview problems that go beyond the NeetCode 150.",
 	"topics": [
 		{

@@ -1,0 +1,88 @@
+{
+	"slug": "queue-journey",
+	"title": "Queue Journey",
+	"description": "Queue and deque design, streaming candidates, BFS layers, dependencies, and shortest paths.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Arrays and linked-list nodes",
+			"Basic stack operations"
+		],
+		"outcome": "Recognize when arrival order, candidate expiry, or a breadth-first frontier calls for a queue.",
+		"connections": {
+			"implement-queue-using-array": "Begin with FIFO: the oldest remaining item leaves first. Separate the positions used for reading and writing instead of shifting the array on every removal.",
+			"implement-queue-using-linked-list": "Keep the same FIFO contract while changing the storage. Front and rear node references replace array indices; notice what must happen when the last item leaves.",
+			"design-circular-queue": "Return to array storage and reuse freed positions. A circular buffer separates logical order from physical indices and makes empty-versus-full state an explicit design decision.",
+			"design-circular-deque": "Extend the circular queue to both ends without changing its storage model. Front insertion and rear deletion introduce backward wraparound and more boundary cases.",
+			"queue-reversal": "Now deliberately change arrival order. A stack reverses items taken from a queue, connecting the two data structures through their opposite removal rules.",
+			"reverse-first-k-elements-of-queue": "Refine full reversal into a prefix operation. Reverse only the first k items, then rotate the untouched suffix so it remains behind the reversed prefix.",
+			"interleave-queue-halves": "Instead of reversing a prefix, weave two arrival-ordered streams together. Keep track of which half owns each item and preserve the order within each half.",
+			"implement-queue-using-stacks": "Turn the reversal idea into an implementation technique. Two stacks can restore FIFO order, and postponing transfers until necessary makes operations amortized O(1).",
+			"implement-stack-using-queues": "Reverse the previous emulation: expose LIFO using FIFO operations. Rotating existing items behind a new arrival places the newest value at the front.",
+			"generate-binary-numbers": "Use the queue as a frontier of unfinished work. Removing one binary string and appending its two children produces values in breadth-first order.",
+			"first-non-repeating-in-a-stream": "Keep arrival order, but discard candidates that stop being valid. A frequency table tells you whether the oldest candidate can still answer the next stream query.",
+			"first-negative-in-every-window": "A candidate can now expire because it is too old, not because it repeats. Store indices so the front can be removed as the fixed-size window advances.",
+			"sliding-window-maximum": "Extend the previous window queue into a deque. Remove expired indices from the front and candidates dominated by a newer, larger value from the back.",
+			"design-minmax-queue": "Turn the sliding-window maximum into a reusable queue API. Keep ordinary FIFO storage plus increasing and decreasing candidate deques, preserving duplicate minima and maxima.",
+			"binary-tree-level-order-traversal": "Return to the frontier from binary-number generation, this time with tree nodes. Snapshot the current queue size to separate one level from the children it creates.",
+			"rotting-oranges": "Generalize level-order traversal to a grid with many starting nodes. One queue seeded with every rotten orange models simultaneous spreading; each BFS layer is one minute.",
+			"course-schedule": "A frontier can mean ready work rather than physical distance. Queue courses with no remaining prerequisites and release their dependents; unprocessed courses expose a dependency cycle.",
+			"course-schedule-ii": "Reuse the same indegree-removal process and retain the processing order. A valid schedule must include every course, including independent courses in disconnected components.",
+			"word-ladder": "Return to distance layers, now in an implicit graph of words. Generate valid one-letter neighbors as needed, and mark them visited when queued so the first arrival is the shortest transformation."
+		}
+	},
+	"topics": [
+		{
+			"name": "FIFO foundations",
+			"description": "Preserve arrival order with either array indices or linked nodes.",
+			"problemCodes": [
+				"implement-queue-using-array",
+				"implement-queue-using-linked-list"
+			]
+		},
+		{
+			"name": "Circular buffers and deques",
+			"description": "Reuse bounded storage, then support insertion and deletion at either end.",
+			"problemCodes": ["design-circular-queue", "design-circular-deque"]
+		},
+		{
+			"name": "Control the order",
+			"description": "Reverse, rotate, interleave, then recover FIFO using two stacks.",
+			"problemCodes": [
+				"queue-reversal",
+				"reverse-first-k-elements-of-queue",
+				"interleave-queue-halves",
+				"implement-queue-using-stacks",
+				"implement-stack-using-queues"
+			]
+		},
+		{
+			"name": "Streams and windows",
+			"description": "Maintain only candidates that can still answer the next query.",
+			"problemCodes": [
+				"generate-binary-numbers",
+				"first-non-repeating-in-a-stream",
+				"first-negative-in-every-window",
+				"sliding-window-maximum",
+				"design-minmax-queue"
+			]
+		},
+		{
+			"name": "Breadth-first frontiers",
+			"description": "Process one distance layer at a time, then introduce multiple sources.",
+			"problemCodes": [
+				"binary-tree-level-order-traversal",
+				"rotting-oranges"
+			]
+		},
+		{
+			"name": "Dependencies and shortest transformations",
+			"description": "Use queue frontiers for ready work and minimum-distance exploration.",
+			"problemCodes": [
+				"course-schedule",
+				"course-schedule-ii",
+				"word-ladder"
+			]
+		}
+	]
+}

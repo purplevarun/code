@@ -1,14 +1,32 @@
-import type { Problem, ProblemSet, StudyGuide } from "@/types/problems";
+import type {
+	LearningJourney,
+	Problem,
+	ProblemSet,
+	StudyGuide,
+} from "@/types/problems";
 
 import problemsRaw from "./dsa_problems.json?raw";
 import allDsaRaw from "./problem_sets/all-dsa-questions.json?raw";
+import arraysStringsJourneyRaw from "./problem_sets/arrays-strings-journey.json?raw";
+import backtrackingJourneyRaw from "./problem_sets/backtracking-journey.json?raw";
+import bitsMathJourneyRaw from "./problem_sets/bits-math-journey.json?raw";
 import blind75Raw from "./problem_sets/blind-75.json?raw";
 import csesRaw from "./problem_sets/cses.json?raw";
+import dynamicProgrammingJourneyRaw from "./problem_sets/dynamic-programming-journey.json?raw";
 import freeEssentialsRaw from "./problem_sets/free-dsa-essentials.json?raw";
+import graphsJourneyRaw from "./problem_sets/graphs-journey.json?raw";
+import greedyIntervalsJourneyRaw from "./problem_sets/greedy-intervals-journey.json?raw";
+import heapJourneyRaw from "./problem_sets/heap-journey.json?raw";
 import hldRaw from "./problem_sets/hld.json?raw";
 import lldRaw from "./problem_sets/lld.json?raw";
+import linkedListJourneyRaw from "./problem_sets/linked-list-journey.json?raw";
 import neetcode150Raw from "./problem_sets/neetcode-150.json?raw";
+import queueJourneyRaw from "./problem_sets/queue-journey.json?raw";
+import searchingSortingJourneyRaw from "./problem_sets/searching-sorting-journey.json?raw";
+import stackJourneyRaw from "./problem_sets/stack-journey.json?raw";
 import topInterviewRaw from "./problem_sets/top-interview.json?raw";
+import treesJourneyRaw from "./problem_sets/trees-journey.json?raw";
+import triesJourneyRaw from "./problem_sets/tries-journey.json?raw";
 
 export const ALL_DSA_SET_SLUG = "all-dsa-questions";
 export const FREE_PRACTICE_SET_SLUG = "free-dsa-essentials";
@@ -29,15 +47,31 @@ type ProblemSetReference = {
 	slug: string;
 	title: string;
 	description: string;
+	featured?: boolean;
+	journey?: LearningJourney;
 	guides?: Record<string, StudyGuide>;
 	topics: Array<{
 		name: string;
+		description?: string;
 		problemCodes: string[];
 	}>;
 };
 
 const problemRecords = JSON.parse(problemsRaw) as ProblemRecord[];
 const problemSetReferences = [
+	JSON.parse(arraysStringsJourneyRaw),
+	JSON.parse(searchingSortingJourneyRaw),
+	JSON.parse(linkedListJourneyRaw),
+	JSON.parse(stackJourneyRaw),
+	JSON.parse(queueJourneyRaw),
+	JSON.parse(backtrackingJourneyRaw),
+	JSON.parse(treesJourneyRaw),
+	JSON.parse(triesJourneyRaw),
+	JSON.parse(heapJourneyRaw),
+	JSON.parse(graphsJourneyRaw),
+	JSON.parse(greedyIntervalsJourneyRaw),
+	JSON.parse(dynamicProgrammingJourneyRaw),
+	JSON.parse(bitsMathJourneyRaw),
 	JSON.parse(allDsaRaw),
 	JSON.parse(freeEssentialsRaw),
 	JSON.parse(neetcode150Raw),
@@ -76,8 +110,11 @@ export const problemSets: ProblemSet[] = problemSetReferences.map((setRef) => ({
 	slug: setRef.slug,
 	title: setRef.title,
 	description: setRef.description,
+	featured: setRef.featured,
+	journey: setRef.journey,
 	topics: setRef.topics.map((topic) => ({
 		name: topic.name,
+		description: topic.description,
 		problems: topic.problemCodes
 			.map((code, index) => {
 				const match = problemByCode.get(code);

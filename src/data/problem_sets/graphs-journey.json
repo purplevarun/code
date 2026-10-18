@@ -1,0 +1,97 @@
+{
+	"slug": "graphs-journey",
+	"title": "Graph Journey",
+	"description": "DFS/BFS, connectivity, union-find, topological order, shortest paths, spanning trees, and Euler trails.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Stacks, queues, and adjacency lists",
+			"Heap basics before weighted shortest paths",
+			"Recursion and visited-state tracking"
+		],
+		"outcome": "Model vertices and edges explicitly, then select traversal, ordering, connectivity, or weighted-path algorithms by their assumptions.",
+		"connections": {
+			"number-of-islands": "Begin with an implicit grid graph and flood-fill one component at a time. Mark cells when discovered so a neighbor cannot enqueue or recurse into the same work repeatedly.",
+			"max-area-of-island": "Reuse flood fill while returning a component aggregate. Count cells in the current component separately from the maximum across all components.",
+			"clone-graph": "Separate original vertex identity from copied vertex identity. Create and memoize a clone before following its neighbors, so cycles and shared neighbors do not create duplicate copies.",
+			"number-of-connected-components-in-an-undirected-graph": "Move from a grid to an adjacency-list graph. Start a traversal from every unvisited vertex, including isolated vertices with no incident edges.",
+			"graph-valid-tree": "Connectivity alone is insufficient for a tree. Combine reaching every vertex with absence of cycles, or use the connected graph's required edge count.",
+			"is-graph-bipartite": "Carry a color constraint across edges instead of only visited state. Every component must be checked, and an edge joining equal colors is a contradiction.",
+			"redundant-connection": "Replace repeated reachability searches with disjoint-set union. An edge whose endpoints already share a representative is exactly the one that closes a cycle.",
+			"accounts-merge": "Use the same union-find machinery with a domain-specific identity relation. Shared email addresses join records, while equal display names alone do not prove the same account.",
+			"course-schedule": "Switch to a directed dependency graph. Undirected parent-skipping no longer detects cycles correctly; use recursion-stack colors or an indegree-zero processing queue.",
+			"course-schedule-ii": "Retain the order from indegree removal instead of only checking feasibility. A partial ordering that omits a cycle is not a valid schedule for all courses.",
+			"alien-dictionary": "Construct the dependency graph from observations rather than receiving edges directly. Only the first differing character of adjacent words creates an edge; invalid prefix order is a separate failure case.",
+			"rotting-oranges": "Use BFS layers as elapsed time and initialize the frontier with every source. Reaching a cell first gives its earliest arrival when every edge takes one unit.",
+			"walls-and-gates": "Reuse multi-source BFS to fill a whole distance field. Starting from every gate avoids solving an independent shortest-path search for each room.",
+			"word-ladder": "Generate an unweighted graph's neighbors on demand from word edits. BFS still gives shortest distance; the main design choice is efficient valid-neighbor generation.",
+			"dijkstras-algorithm": "Replace FIFO layers with a minimum-distance heap when nonnegative edge weights differ. Ignore stale heap entries and relax only genuine improvements.",
+			"network-delay-time": "Apply the same weighted shortest-path solver to a directed network. The final broadcast time is the largest reachable shortest distance, and one unreachable node makes the broadcast incomplete.",
+			"bellman-ford": "Remove Dijkstra's nonnegative-edge assumption. Repeated edge relaxation handles negative weights, while an extra improvement pass exposes a negative cycle reachable from the source.",
+			"cheapest-flights-within-k-stops": "Add an edge-count budget to relaxation. A cheaper route using too many edges cannot replace every more expensive route; copied distance layers preserve the allowed number of flights.",
+			"floyd-warshall": "Move from one source to all pairs on a small graph. The DP state permits an increasing set of intermediate vertices, so the intermediate-vertex loop must be outermost.",
+			"prims-algorithm": "Change the objective from one source's shortest routes to connecting all vertices with minimum total edge cost. Prim grows one component; Kruskal combines sorted edges with the union-find pattern learned earlier.",
+			"min-cost-to-connect-all-points": "Apply the spanning-tree objective when edge costs are derived from coordinates. Manhattan distance defines a complete graph, which can be handled without confusing it with shortest-path distance from one point.",
+			"swim-in-rising-water": "Interview stretch: a route's cost is its maximum elevation rather than the sum of weights. Re-derive relaxation with max, or view rising water as a monotonic connectivity threshold.",
+			"reconstruct-itinerary": "Interview stretch: use every edge once rather than merely visiting vertices. Repeated tickets are distinct edges, and an Euler-trail construction must preserve the required lexical order."
+		}
+	},
+	"topics": [
+		{
+			"name": "Traversal and graph modeling",
+			"description": "Identify components, aggregate reachable nodes, and preserve identity while traversing cycles.",
+			"problemCodes": [
+				"number-of-islands",
+				"max-area-of-island",
+				"clone-graph",
+				"number-of-connected-components-in-an-undirected-graph",
+				"graph-valid-tree",
+				"is-graph-bipartite"
+			]
+		},
+		{
+			"name": "Disjoint-set connectivity",
+			"description": "Use representatives, path compression, and balanced unions to maintain changing components.",
+			"problemCodes": ["redundant-connection", "accounts-merge"]
+		},
+		{
+			"name": "Directed cycles and topological order",
+			"description": "Distinguish dependencies from undirected connectivity and construct only justified ordering edges.",
+			"problemCodes": [
+				"course-schedule",
+				"course-schedule-ii",
+				"alien-dictionary"
+			]
+		},
+		{
+			"name": "Unweighted shortest paths",
+			"description": "Use BFS layers, multiple starting points, and implicit neighbors to compute earliest arrivals.",
+			"problemCodes": [
+				"rotting-oranges",
+				"walls-and-gates",
+				"word-ladder"
+			]
+		},
+		{
+			"name": "Weighted shortest-path families",
+			"description": "Choose algorithms by edge signs, source count, and path-length constraints rather than by habit.",
+			"problemCodes": [
+				"dijkstras-algorithm",
+				"network-delay-time",
+				"bellman-ford",
+				"cheapest-flights-within-k-stops",
+				"floyd-warshall"
+			]
+		},
+		{
+			"name": "Spanning trees and graph extensions",
+			"description": "Separate total connectivity cost, bottleneck paths, and trails that must consume every edge.",
+			"problemCodes": [
+				"prims-algorithm",
+				"min-cost-to-connect-all-points",
+				"swim-in-rising-water",
+				"reconstruct-itinerary"
+			]
+		}
+	]
+}

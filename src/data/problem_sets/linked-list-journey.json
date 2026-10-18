@@ -1,0 +1,70 @@
+{
+	"slug": "linked-list-journey",
+	"title": "Linked List Journey",
+	"description": "Pointer rewiring, fast/slow scans, cycles, list merging, doubly linked nodes, and LRU design.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"References, nodes, and null checks",
+			"Basic arrays and recursion"
+		],
+		"outcome": "Rewire nodes without losing the remaining chain, and combine pointer invariants into practical list-based designs.",
+		"connections": {
+			"middle-of-linked-list": "Start with a read-only fast/slow scan. Moving one pointer twice as fast locates the midpoint without a preliminary length pass.",
+			"reverse-linked-list": "Move from reading links to changing them. Save the next unprocessed node before redirecting the current link, preserving access to the remaining chain.",
+			"merge-two-sorted-lists": "Keep a tail pointer for the already built result. The smaller current head is safe to append, and a dummy node removes special handling for the first result node.",
+			"add-two-numbers": "Reuse the output-tail construction while carrying arithmetic state between nodes. Unequal lengths and a final carry should follow the same loop invariant.",
+			"remove-nth-node-from-end-of-list": "Use two pointers with a fixed gap rather than different speeds. A dummy predecessor lets removal of the head use the same rewiring as any other node.",
+			"linked-list-cycle": "Return to fast/slow motion, now on a potentially cyclic chain. A repeated node identity matters; equal stored values do not establish a cycle.",
+			"linked-list-cycle-ii": "Extend cycle detection to locate its entry. After a meeting, restart one pointer at the head and move both one step at a time until their identities agree.",
+			"intersection-of-two-linked-lists": "Use shared node identity in two acyclic chains. Switching heads after reaching the end equalizes the total distance traveled despite different prefix lengths.",
+			"palindrome-linked-list": "Combine middle-finding and reversal: compare the first half with the reversed second half. Restore the list afterward when mutation is not part of the intended result.",
+			"reorder-list": "Reuse splitting and second-half reversal, but weave the halves together instead of comparing values. Cut the first half before merging so the old links cannot create a cycle.",
+			"rotate-list": "Make a temporary cycle deliberately, then break it at the new tail. Reduce the rotation by the list length and handle an unchanged rotation before rewiring.",
+			"sort-list": "Compose midpoint splitting with sorted merging into merge sort. Each recursive half must be physically separated and strictly smaller than its parent list.",
+			"copy-list-with-random-pointer": "A node now has more than one relationship. Separate creation of copied identities from wiring their next and random references so shared targets remain shared in the copy.",
+			"reverse-nodes-in-k-group": "Extend one reversal into repeated bounded segments. Verify a full group exists before changing it, then reconnect the previous tail and the untouched suffix.",
+			"reverse-doubly-linked-list": "Maintain both directions of every relationship. Swapping next and previous links at each node reverses the chain, but traversal must follow the saved original direction.",
+			"lru-cache": "Combine constant-time lookup with a doubly linked recency list. The map identifies a node directly, while unlinking and moving it preserves the least-to-most-recent ordering."
+		}
+	},
+	"topics": [
+		{
+			"name": "Traversal and safe rewiring",
+			"description": "Find positions, preserve unprocessed nodes, and build results with a stable tail invariant.",
+			"problemCodes": [
+				"middle-of-linked-list",
+				"reverse-linked-list",
+				"merge-two-sorted-lists",
+				"add-two-numbers",
+				"remove-nth-node-from-end-of-list"
+			]
+		},
+		{
+			"name": "Cycles and shared identities",
+			"description": "Distinguish reference identity from equal values when chains meet or loop.",
+			"problemCodes": [
+				"linked-list-cycle",
+				"linked-list-cycle-ii",
+				"intersection-of-two-linked-lists"
+			]
+		},
+		{
+			"name": "Compose list operations",
+			"description": "Reuse splitting, reversal, and merging while reconnecting every affected boundary.",
+			"problemCodes": [
+				"palindrome-linked-list",
+				"reorder-list",
+				"rotate-list",
+				"sort-list",
+				"copy-list-with-random-pointer",
+				"reverse-nodes-in-k-group"
+			]
+		},
+		{
+			"name": "Doubly linked design",
+			"description": "Maintain two-way links, then combine them with hashing for constant-time recency updates.",
+			"problemCodes": ["reverse-doubly-linked-list", "lru-cache"]
+		}
+	]
+}

@@ -1,0 +1,75 @@
+{
+	"slug": "bits-math-journey",
+	"title": "Bits & Math Journey",
+	"description": "Digits, carries, overflow, Euclid's algorithm, primality, sieves, bit masks, and exponentiation.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Integer arithmetic and remainders",
+			"Array indexing and basic binary notation"
+		],
+		"outcome": "Use numeric representations and invariants safely, including zero, overflow, fixed bit widths, and integer-versus-floating arithmetic.",
+		"connections": {
+			"count-all-digits-of-a-number": "Start with repeated division to expose a number's representation. Zero is itself a one-digit number, so it needs attention before a loop that only runs on positive values.",
+			"plus-one": "Represent a number as digit positions and propagate a carry. The all-nines case changes the representation's length rather than fitting into the existing final position.",
+			"reverse-integer": "Use remainder extraction and repeated multiplication to build a reversed value. Check representable bounds before multiplying or adding instead of relying on overflow behavior.",
+			"multiply-strings": "Generalize carries from adding one to combining every digit pair. A digit's output position is determined by both input indices, so accumulation and carry normalization must stay consistent.",
+			"gcd-of-two-numbers": "Use a remainder invariant to shrink a problem without changing its answer. Euclid's algorithm replaces divisor enumeration with repeated reduction of the larger argument.",
+			"codechef-prb01": "A composite number has a divisor pair with one member no greater than its square root. This bounds trial division and separates primality from simply checking a few small factors.",
+			"count-primes": "Move from testing one number to testing a whole range. A sieve shares work by marking multiples of each newly discovered prime instead of repeating trial division for every candidate.",
+			"happy-number": "Repeated digit processing creates a deterministic state transition. A visited set or fast/slow pointers can detect whether the sequence reaches one or enters another cycle.",
+			"sqrtx": "Search the final integer whose square is within the input. Division-based comparisons can avoid multiplication overflow when the candidate range is large.",
+			"powx-n": "Exploit the binary structure of an exponent to halve the work repeatedly. Negative exponents and the most negative integer require care when taking reciprocals and absolute values.",
+			"number-of-1-bits": "Move from decimal digits to binary positions. Clearing the lowest set bit removes one contribution at a time without scanning every possible position.",
+			"single-number": "Use XOR cancellation to remove paired occurrences. The result is valid because the input guarantees every other value appears exactly twice, not because XOR finds arbitrary odd-frequency values by itself.",
+			"missing-number": "Apply cancellation to two related collections: expected indices and observed values. The unmatched expected value remains, with no risk of overflowing an arithmetic total.",
+			"counting-bits": "Reuse smaller binary states instead of counting each number independently. Removing the lowest set bit links a value to an already solved value with one fewer set bit.",
+			"reverse-bits": "Treat the input as a fixed-width bit pattern, including leading zeroes. Numeric digit reversal and bit reversal have different stopping conditions.",
+			"sum-of-two-integers": "Separate addition into sum-without-carry and carry bits. Repeat until no carry remains, using a fixed-width mask where the language has unbounded signed integers.",
+			"bitwise-and-of-numbers-range": "Across a consecutive range, low bits eventually vary and disappear under AND. Find the shared high-bit prefix instead of evaluating every integer in the interval."
+		}
+	},
+	"topics": [
+		{
+			"name": "Digits, carries, and bounds",
+			"description": "Manipulate numeric representations while checking zero cases, digit positions, and overflow.",
+			"problemCodes": [
+				"count-all-digits-of-a-number",
+				"plus-one",
+				"reverse-integer",
+				"multiply-strings"
+			]
+		},
+		{
+			"name": "Remainders, primes, and repeated states",
+			"description": "Reuse divisor structure, shared sieve work, and cycle detection in elementary numeric problems.",
+			"problemCodes": [
+				"gcd-of-two-numbers",
+				"codechef-prb01",
+				"count-primes",
+				"happy-number",
+				"sqrtx",
+				"powx-n"
+			]
+		},
+		{
+			"name": "Bit primitives and cancellation",
+			"description": "Interpret AND, XOR, and shifts through fixed input guarantees and smaller binary states.",
+			"problemCodes": [
+				"number-of-1-bits",
+				"single-number",
+				"missing-number",
+				"counting-bits"
+			]
+		},
+		{
+			"name": "Fixed-width transformations",
+			"description": "Handle leading zeroes, carries, signedness, and common prefixes without enumerating all values.",
+			"problemCodes": [
+				"reverse-bits",
+				"sum-of-two-integers",
+				"bitwise-and-of-numbers-range"
+			]
+		}
+	]
+}

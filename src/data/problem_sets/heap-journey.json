@@ -1,0 +1,91 @@
+{
+	"slug": "heap-journey",
+	"title": "Heap Journey",
+	"description": "Heap design, top-k selection, k-way merging, two heaps, scheduling, and graph frontiers.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Array indices and binary-tree layout",
+			"Comparisons and frequency maps"
+		],
+		"outcome": "Choose the right heap ordering and size, then compose heaps with streams and queues.",
+		"connections": {
+			"check-array-is-max-heap": "Start by recognizing heap order in an array-backed complete tree. A heap guarantees a parent-child relationship, not that the whole array is sorted.",
+			"min-heap-implementation": "Turn the parent-child invariant into operations. Flip the comparison for a min-heap and repair only the path disturbed by an insertion or removal.",
+			"heap-sort": "Reuse heap repair to sort in place. A max-heap moves the largest remaining item to the sorted suffix; the active heap boundary shrinks after each extraction.",
+			"last-stone-weight": "Use the heap as a changing collection rather than a sorting tool. Removing the two largest values can create a new candidate that must rejoin the remaining priorities.",
+			"kth-smallest-element-in-an-array": "Avoid sorting everything when only one rank matters. Retain k candidates in a max-heap so the least desirable retained candidate is always removable.",
+			"kth-largest-element-in-an-array": "Mirror the previous selection problem. Keep the k largest candidates in a min-heap; its root is the smallest retained value and therefore the kth largest overall.",
+			"sort-a-nearly-sorted-array": "Use a different reason to bound heap size: every value is at most k positions from its sorted place, so only the next k + 1 candidates can be the next output.",
+			"k-closest-points-to-origin": "Return to bounded selection and replace the numeric key with squared distance. A max-heap removes the farthest retained point when a closer candidate arrives.",
+			"top-k-frequent-elements": "Change the priority again, from distance to frequency. Count first, then retain the k strongest candidates with a min-heap and an explicit tie-break.",
+			"top-k-frequent-words": "Keep frequency selection, but make tie-breaking part of the contract. When retaining only k words, the worst retained word has lower frequency or lexicographically larger spelling.",
+			"kth-largest-element-in-a-stream": "Make your kth-largest heap persistent. Each new arrival only updates the same k candidates; recomputing or sorting the whole history is unnecessary.",
+			"merge-k-sorted-arrays": "Move from one incoming stream to k sorted streams. Keep only the current head of each stream in a min-heap and replace the head you consume.",
+			"merge-k-sorted-lists": "Reuse the k-way merge exactly, changing only the cursor representation. A node's next pointer replaces the array-and-offset pair.",
+			"kth-smallest-element-in-a-sorted-matrix": "Treat each sorted row as a stream, but stop after k extractions instead of materializing the whole merge. Sorted columns also enable an alternative value-space binary search.",
+			"find-k-pairs-with-smallest-sums": "Build the streams implicitly: fixing one value in the first sorted array creates a sorted row of pair sums with the second. Advance only the row whose head was consumed.",
+			"minimum-cost-to-connect-ropes": "Unlike merging sorted streams, extraction now creates a new candidate. Reinsert each combined rope and justify why combining the two smallest remaining lengths minimizes repeated cost.",
+			"find-median-from-data-stream": "One heap exposes an extreme; a median needs a boundary between two halves. Maintain a max-heap below that boundary and a min-heap above it, balanced after each insertion.",
+			"sliding-window-median": "Interview stretch: add expiry to the two-heap median. A departing value may be buried, so distinguish live sizes from physical heap sizes and remove stale entries before using a root.",
+			"reorganize-string": "Return to frequency priorities and make the previously chosen character temporarily unavailable. Holding one candidate aside prevents adjacent equal characters without giving up greedy selection.",
+			"task-scheduler": "Coordinate two structures with different jobs: a max-heap ranks ready tasks and a FIFO queue records cooldown release times. Priority alone cannot tell you when a task is legal.",
+			"minimum-number-of-platforms-required-for-a-railway": "Change the priority from task frequency to resource release time. A min-heap of departures identifies reusable platforms; peak simultaneous occupancy determines the required capacity.",
+			"dijkstras-algorithm": "Generalize choosing the next event to choosing the cheapest graph frontier. With nonnegative edges, the smallest valid tentative distance can be finalized; obsolete heap entries must be skipped."
+		}
+	},
+	"topics": [
+		{
+			"name": "Understand and maintain heap order",
+			"description": "Recognize the invariant, repair it, then apply repeated extraction.",
+			"problemCodes": [
+				"check-array-is-max-heap",
+				"min-heap-implementation",
+				"heap-sort",
+				"last-stone-weight"
+			]
+		},
+		{
+			"name": "Keep only the useful candidates",
+			"description": "Bound the heap and choose the key that makes eviction straightforward.",
+			"problemCodes": [
+				"kth-smallest-element-in-an-array",
+				"kth-largest-element-in-an-array",
+				"sort-a-nearly-sorted-array",
+				"k-closest-points-to-origin",
+				"top-k-frequent-elements",
+				"top-k-frequent-words"
+			]
+		},
+		{
+			"name": "Process sorted and online streams",
+			"description": "Maintain state across arrivals and advance only the stream you consume.",
+			"problemCodes": [
+				"kth-largest-element-in-a-stream",
+				"merge-k-sorted-arrays",
+				"merge-k-sorted-lists",
+				"kth-smallest-element-in-a-sorted-matrix",
+				"find-k-pairs-with-smallest-sums",
+				"minimum-cost-to-connect-ropes"
+			]
+		},
+		{
+			"name": "Two heaps and window expiry",
+			"description": "Balance two halves, then add the harder requirement of expiring old values.",
+			"problemCodes": [
+				"find-median-from-data-stream",
+				"sliding-window-median"
+			]
+		},
+		{
+			"name": "Scheduling and graph frontiers",
+			"description": "Choose legal candidates, track release times, and expand the cheapest frontier.",
+			"problemCodes": [
+				"reorganize-string",
+				"task-scheduler",
+				"minimum-number-of-platforms-required-for-a-railway",
+				"dijkstras-algorithm"
+			]
+		}
+	]
+}

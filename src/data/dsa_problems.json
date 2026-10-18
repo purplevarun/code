@@ -146,6 +146,7 @@
 		"name": "Binary Tree Level Order Traversal",
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/binary-tree-level-order-traversal/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/level-order-traversal/1",
 		"locked": false,
 		"hints": [
 			"You need to group nodes by level, so a plain DFS needs extra bookkeeping — BFS is more natural.",
@@ -203,7 +204,11 @@
 		"difficulty": "M",
 		"url": "https://www.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"If a maximum page load is feasible, any larger maximum is feasible too. Search that load between the largest book and the total number of pages.",
+			"For a proposed limit, scan books in order, assigning contiguous books to one student until the next would exceed the limit, then start another student.",
+			"A limit is feasible if the scan uses at most the available students; reject more students than books when each must receive a book. Keep the smallest feasible limit and use wide totals."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1"
 	},
 	{
@@ -356,7 +361,11 @@
 		"id": "essentials-codechef-prb01",
 		"code": "codechef-prb01",
 		"slug": "codechef-prb01",
-		"hints": [],
+		"hints": [
+			"A prime has exactly two positive divisors. Reject values below two, then look for a divisor rather than trying to construct prime numbers.",
+			"Test candidate divisors only through the square root. If a larger factor exists, its paired smaller factor must already have been encountered.",
+			"Handle two separately and skip larger even divisors after rejecting even inputs. Use divisor <= number / divisor if squaring the divisor might overflow, and follow CodeChef's required output wording."
+		],
 		"name": "Primality Test",
 		"difficulty": "E",
 		"url": "https://www.codechef.com/problems/PRB01",
@@ -621,7 +630,11 @@
 		"difficulty": "E",
 		"url": "https://www.geeksforgeeks.org/problems/count-total-digits-in-a-number/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"Removing the final decimal digit is integer division by ten. Repeating that operation counts how many positions the representation contains.",
+			"Count each division until the number becomes zero, but return one immediately when the original input is zero.",
+			"Avoid floating-point logarithms for this basic task because powers of ten and zero need careful treatment. Work on a copy if the original input must remain available."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/count-total-digits-in-a-number/1"
 	},
 	{
@@ -646,7 +659,11 @@
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/subarray-sum-equals-k/",
 		"locked": false,
-		"hints": []
+		"hints": [
+			"A subarray sum is the difference between two prefix sums. At the current prefix, count how many earlier prefixes equal currentSum minus the target.",
+			"Initialize the frequency of prefix sum zero to one so intervals beginning at index zero are included. Query before inserting the current prefix to avoid counting an empty interval.",
+			"Store frequencies rather than one index because several earlier prefixes can contribute different subarrays. This works with negative values, unlike a positivity-based sliding window."
+		]
 	},
 	{
 		"id": "dsa-0146",
@@ -779,7 +796,12 @@
 		"difficulty": "M",
 		"url": "https://cses.fi/problemset/task/1158/",
 		"locked": false,
-		"hints": ["0/1 knapsack over price-value pairs."]
+		"hints": [
+			"Choose each book at most once while maximizing pages within the price budget. This is a 0/1 knapsack model, not fractional selection.",
+			"Let best[budget] store the most pages obtainable from processed books. For each book, update budgets downward using its price and page count so the same book cannot be reused.",
+			"Initialize all budgets to zero because selecting no books is allowed. Ignore books costing more than the budget; the one-dimensional table uses O(budget) memory and O(books * budget) time."
+		],
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1"
 	},
 	{
 		"id": "dsa-0224",
@@ -855,7 +877,11 @@
 		"id": "essentials-cses-1646",
 		"code": "cses-1646",
 		"slug": "cses-1646",
-		"hints": [],
+		"hints": [
+			"The array never changes, so a preprocessing pass can answer many interval-sum queries without rescanning their elements.",
+			"Build a prefix array with an initial zero. The sum of the judge's one-based inclusive range from left to right is prefix[right] - prefix[left - 1].",
+			"Use a wide integer type for totals because many large array values may be added. Preprocessing is O(n), each query is O(1), and no tree structure is necessary for the immutable case."
+		],
 		"name": "Static Range Sum Queries",
 		"difficulty": "E",
 		"url": "https://cses.fi/problemset/task/1646/",
@@ -865,7 +891,11 @@
 		"id": "essentials-cses-1648",
 		"code": "cses-1648",
 		"slug": "cses-1648",
-		"hints": [],
+		"hints": [
+			"A point change affects many ordinary prefix totals. A Fenwick tree stores overlapping binary-sized blocks so each update and prefix query touches only logarithmically many entries.",
+			"Use one-based indices. Add a delta along index += index & -index; read a prefix along index -= index & -index, accumulating the stored block totals.",
+			"Type 1 assigns a new value rather than adding it, so update by newValue minus the saved old value. Type 2 answers prefix[right] - prefix[left - 1]; keep both stored values and sums in wide integer types."
+		],
 		"name": "Dynamic Range Sum Queries",
 		"difficulty": "M",
 		"url": "https://cses.fi/problemset/task/1648/",
@@ -875,7 +905,11 @@
 		"id": "essentials-cses-1649",
 		"code": "cses-1649",
 		"slug": "cses-1649",
-		"hints": [],
+		"hints": [
+			"Unlike sums, interval minima cannot be obtained by subtracting two prefix minima. Store a mergeable minimum for a hierarchy of array intervals.",
+			"Build a segment tree whose parent stores the minimum of its children. A point assignment changes one leaf and the ancestors on its path to the root.",
+			"Answer a range by combining only fully covered tree intervals, using positive infinity for disjoint pieces. Convert the judge's one-based inclusive endpoints consistently; both updates and queries take O(log n)."
+		],
 		"name": "Dynamic Range Minimum Queries",
 		"difficulty": "M",
 		"url": "https://cses.fi/problemset/task/1649/",
@@ -1611,7 +1645,11 @@
 		"difficulty": "M",
 		"url": "https://www.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"Breadth-first layers work only for equal edge costs. With nonnegative weights, expand the unsettled vertex with the smallest tentative distance instead.",
+			"Initialize the source distance to zero and use a min-heap of distance-vertex pairs. Relax an edge only when the candidate distance improves the neighbor's best known distance.",
+			"Skip a popped pair if its distance differs from the current best value. Do not mark vertices finished when first inserted; a cheaper route may still arrive. Negative edges require a different shortest-path algorithm."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1"
 	},
 	{
@@ -1719,6 +1757,7 @@
 		"name": "Find Median from Data Stream",
 		"difficulty": "H",
 		"url": "https://leetcode.com/problems/find-median-from-data-stream/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/find-median-in-a-stream-1587115620/1",
 		"locked": false,
 		"hints": [
 			"Sorting on every insert is too slow — you want the middle without a full sort.",
@@ -1763,9 +1802,9 @@
 		"url": "https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/",
 		"locked": false,
 		"hints": [
-			"This is substring search — brute force checking every start index is O(n*m) and fine for most inputs.",
-			"At each starting index in the haystack, compare the needle character by character.",
-			"For an O(n+m) approach, look into KMP's failure-function preprocessing."
+			"A direct comparison from every starting position is a useful baseline, but repeated pattern prefixes cause the same text characters to be compared many times.",
+			"Build KMP's prefix table: for each pattern prefix, store the length of its longest proper prefix that is also a suffix. On mismatch, follow that table until a compatible shorter prefix remains.",
+			"Scan the text without moving its pointer backward, updating the matched pattern length through the prefix table. A full match ends at the current text index, so subtract patternLength - 1 to return its starting position."
 		]
 	},
 	{
@@ -1802,7 +1841,11 @@
 		"difficulty": "M",
 		"url": "https://www.geeksforgeeks.org/problems/geek-jump/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"The final jump to a step must come from one or two positions earlier. Its cost is the absolute difference between the two endpoint heights.",
+			"Store the minimum total energy to reach each step. Take the smaller of the valid predecessor totals plus their respective jump costs.",
+			"The first step costs zero, and the second has only one predecessor. Only the last two totals are needed for a constant-extra-space version after the recurrence is correct."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/geek-jump/1"
 	},
 	{
@@ -1939,6 +1982,7 @@
 		"name": "Implement Queue using Stacks",
 		"difficulty": "E",
 		"url": "https://leetcode.com/problems/implement-queue-using-stacks/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/queue-using-stack/1",
 		"locked": false,
 		"hints": [
 			"A queue is FIFO but a stack is LIFO — you need two stacks to flip the order back.",
@@ -1953,6 +1997,7 @@
 		"name": "Implement Trie (Prefix Tree)",
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/implement-trie-prefix-tree/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/trie-insert-and-search0651/1",
 		"locked": false,
 		"hints": [
 			"Each node needs children (one per possible character) and a flag marking \"a word ends here.\"",
@@ -1968,7 +2013,11 @@
 		"difficulty": "M",
 		"url": "https://www.geeksforgeeks.org/problems/infix-to-postfix-1587115620/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"Operands can go directly to the output. Operators must wait until every operand in their higher-priority subexpression has been emitted.",
+			"Keep operators and opening parentheses on a stack. A closing parenthesis flushes operators until its matching opener; do not emit either parenthesis.",
+			"Pop higher-precedence operators before pushing a new one. Pop equal precedence only for left-associative operators: exponentiation is right-associative, so a^b^c becomes abc^^. Flush remaining operators at the end."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/infix-to-postfix-1587115620/1"
 	},
 	{
@@ -2105,6 +2154,7 @@
 		"name": "K Closest Points to Origin",
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/k-closest-points-to-origin/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/k-closest-points-to-origin--172242/1",
 		"locked": false,
 		"hints": [
 			"You don't need to fully sort all points, just find the closest k.",
@@ -2133,11 +2183,12 @@
 		"name": "Kth Largest Element in a Stream",
 		"difficulty": "E",
 		"url": "https://leetcode.com/problems/kth-largest-element-in-a-stream/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/kth-largest-element-in-a-stream2220/1",
 		"locked": false,
 		"hints": [
 			"You need the kth largest after every addition, not just once.",
 			"A min-heap of size k always has the kth largest sitting at its top.",
-			"On each add, push the new value, and if the heap exceeds size k, pop the smallest."
+			"On each add, push the value and pop the smallest if the heap exceeds size k. GFG expects -1 for prefixes with fewer than k values; once k values exist, report the heap root."
 		]
 	},
 	{
@@ -2147,11 +2198,12 @@
 		"name": "Kth Largest Element in an Array",
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/kth-largest-element5034/1",
 		"locked": false,
 		"hints": [
-			"Full sorting is O(n log n) — quickselect averages O(n).",
-			"Quickselect partitions like quicksort, but only recurses into the one side that contains the target index.",
-			"A min-heap of size k is a simpler, if slightly slower, O(n log k) alternative."
+			"You only need the k largest values seen so far. Of those retained candidates, the smallest is the first one a better arrival should replace.",
+			"Use a min-heap: push each value and remove the root whenever the size exceeds k. Keep duplicate values; this is kth largest, not kth distinct.",
+			"After the scan, the root is the kth largest. This uses O(n log k) time and O(k) space; quickselect is an alternative when streaming updates are not needed."
 		]
 	},
 	{
@@ -2186,11 +2238,12 @@
 		"name": "Largest Rectangle in Histogram",
 		"difficulty": "H",
 		"url": "https://leetcode.com/problems/largest-rectangle-in-histogram/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-rectangular-area-in-a-histogram-1587115620/1",
 		"locked": false,
 		"hints": [
-			"For each bar, you want the widest rectangle where it's the shortest bar.",
-			"A monotonic increasing stack of (index, height) tracks candidates efficiently.",
-			"When a shorter bar appears, pop taller bars and compute their max rectangle using the current index as the right boundary."
+			"For each bar, find the widest interval in which no bar is shorter. Its height can support a rectangle throughout that interval.",
+			"Compute NSL and NSR as indices with increasing stacks. Pop greater or equal heights in both passes; use -1 and the array length when a boundary is missing.",
+			"For each index, area = height * (rightSmaller - leftSmaller - 1). Equal-height bars may share the same full width. Take the maximum using a sufficiently wide numeric type."
 		]
 	},
 	{
@@ -2201,7 +2254,11 @@
 		"difficulty": "M",
 		"url": "https://www.geeksforgeeks.org/problems/largest-subarray-with-0-sum/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"Two equal prefix sums enclose a subarray summing to zero. To maximize its length, retain the earliest occurrence of each sum.",
+			"Seed prefix sum zero at index -1. At each position, compare the current index with the stored earliest index for the current prefix sum.",
+			"Do not overwrite an earlier occurrence with a later one. Distinguish this map of earliest positions from the frequency map used to count all subarrays of a given sum."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/largest-subarray-with-0-sum/1"
 	},
 	{
@@ -2394,7 +2451,11 @@
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/",
 		"locked": false,
-		"hints": ["Return node if found in both subtrees."]
+		"hints": [
+			"Search both subtrees and return a found target or an already identified ancestor. A target node can itself be the ancestor of the other target.",
+			"Return immediately at null or either target. If the left and right recursive calls both return a node, the current node is where the two target paths join.",
+			"If only one child returns a node, propagate that result upward. Use reference identity and rely on the judge's guarantee that both targets exist; a missing-target variant requires additional presence tracking."
+		]
 	},
 	{
 		"id": "dsa-0043",
@@ -2567,6 +2628,7 @@
 		"name": "Merge k Sorted Lists",
 		"difficulty": "H",
 		"url": "https://leetcode.com/problems/merge-k-sorted-lists/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/merge-k-sorted-linked-lists/1",
 		"locked": false,
 		"hints": [
 			"Merging two at a time repeatedly works, but a heap gets you a cleaner O(n log k).",
@@ -2651,11 +2713,12 @@
 		"name": "Min Stack",
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/min-stack/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/get-minimum-element-from-stack/1",
 		"locked": false,
 		"hints": [
 			"You need getMin() in O(1), so don't recompute it by scanning.",
-			"Keep a second stack that tracks the running minimum alongside the main one.",
-			"Push the current min again whenever a new value is less than or equal to the current min, so popping stays in sync."
+			"Store each pushed value together with the minimum of that value and the previous stack minimum. The first pair uses its own value as the minimum.",
+			"Popping removes both the value and its cached minimum, exposing the previous state's minimum. Duplicate minima are preserved naturally; getMin reads the top pair in O(1), with O(n) total storage."
 		]
 	},
 	{
@@ -2680,7 +2743,11 @@
 		"difficulty": "M",
 		"url": "https://www.geeksforgeeks.org/problems/minimum-platforms-1587115620/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"The answer is the maximum number of trains occupying platforms simultaneously, not the total number of arrivals.",
+			"Sort trains by arrival time while retaining their departure times. A min-heap of active departures lets you release finished trains before inserting the next one.",
+			"Track the largest heap size. For this platform problem, retain departures equal to the incoming arrival time; the same instant cannot serve both trains. A sorted arrival/departure sweep is an alternative."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/minimum-platforms-1587115620/1"
 	},
 	{
@@ -2790,7 +2857,11 @@
 		"difficulty": "M",
 		"url": "https://www.geeksforgeeks.org/problems/geeks-training/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"Today's choice depends on which activity was performed yesterday, not the full history of earlier activities.",
+			"For each day and chosen activity, add its points to the best previous-day total among the other two activities.",
+			"Initialize the three first-day totals directly and compute a fresh three-value row for each following day. Do not overwrite values still needed by another activity's transition."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/geeks-training/1"
 	},
 	{
@@ -2815,6 +2886,7 @@
 		"name": "Number of 1 Bits",
 		"difficulty": "E",
 		"url": "https://leetcode.com/problems/number-of-1-bits/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/set-bits0143/1",
 		"locked": false,
 		"hints": [
 			"You want to count set bits, which you can do by repeatedly isolating the lowest set bit.",
@@ -3038,7 +3110,11 @@
 		"code": "prims-algorithm",
 		"slug": "prims-algorithm",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"A spanning tree connects every vertex with minimum total edge weight. This differs from minimizing each vertex's distance from a particular source.",
+			"Prim repeatedly adds the cheapest edge crossing from the current tree to an unvisited vertex. Skip heap entries whose destination is already included and accumulate each accepted edge once.",
+			"As an alternative, Kruskal sorts all edges and uses disjoint-set union to reject cycle-forming edges. For a connected graph, stop after accepting vertexCount - 1 edges; verify connectivity rather than assuming a partial forest is a tree."
+		],
 		"name": "Minimum Spanning Tree",
 		"url": "https://www.geeksforgeeks.org/problems/minimum-spanning-tree/1",
 		"difficulty": "M",
@@ -3276,6 +3352,7 @@
 		"name": "Rotting Oranges",
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/rotting-oranges/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/rotten-oranges2536/1",
 		"locked": false,
 		"hints": [
 			"All oranges rot simultaneously each minute, which points to a multi-source BFS, not one BFS per rotten orange.",
@@ -3389,6 +3466,7 @@
 		"name": "Sliding Window Maximum",
 		"difficulty": "H",
 		"url": "https://leetcode.com/problems/sliding-window-maximum/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/maximum-of-all-subarrays-of-size-k3101/1",
 		"locked": false,
 		"hints": [
 			"A brute-force max per window is O(n*k) — a monotonic deque gets you O(n).",
@@ -3570,7 +3648,11 @@
 		"difficulty": "M",
 		"url": "https://www.geeksforgeeks.org/problems/subset-sum-problem-1611555638/1",
 		"locked": false,
-		"hints": [],
+		"hints": [
+			"For each value, either use it once or skip it. Record whether each exact sum is reachable rather than storing every chosen subset.",
+			"Initialize only sum zero as reachable. For a one-dimensional table, visit sums downward when processing a value so it cannot be counted twice.",
+			"A value larger than the target can be skipped for nonnegative inputs. Zero does not change boolean reachability, though it matters when a later variant asks for the number of subsets."
+		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/subset-sum-problem-1611555638/1"
 	},
 	{
@@ -3737,9 +3819,9 @@
 		"url": "https://leetcode.com/problems/task-scheduler/",
 		"locked": false,
 		"hints": [
-			"The most frequent task drives the minimum possible schedule length.",
-			"Picture \"slots\" of size (cooldown + 1), filled first by the most frequent tasks.",
-			"The answer is the max of (total tasks) and the slot-based calculation using the most frequent task's count."
+			"Among tasks currently allowed to run, prefer the one with the most remaining occurrences. A max-heap can maintain that priority.",
+			"After running a task at time t, enqueue its remaining count with release time t + cooldown + 1. Before choosing the next task, return every released entry to the heap.",
+			"If the ready heap is empty, jump to the earliest cooldown release instead of simulating every idle slot. Stop only when both structures are empty; with time starting at zero, the schedule length is the last occupied time plus one."
 		],
 		"gfgUrl": "https://www.geeksforgeeks.org/problems/task-scheduler/1"
 	},
@@ -3764,11 +3846,12 @@
 		"name": "Top K Frequent Elements",
 		"difficulty": "M",
 		"url": "https://leetcode.com/problems/top-k-frequent-elements/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/top-k-frequent-elements-in-array/1",
 		"locked": false,
 		"hints": [
 			"First count how often each element appears.",
-			"You don't need to fully sort — bucket sort by frequency runs in O(n).",
-			"Create buckets indexed by frequency (0 to n), then read off the top k from the end."
+			"Keep a min-heap of at most k (frequency, value) pairs. Removing the smallest pair discards the weakest retained candidate.",
+			"GFG breaks equal-frequency ties in favor of the larger value and requires descending priority order. Extract the retained pairs and reverse that order; LeetCode accepts any order for its selected values."
 		]
 	},
 	{
@@ -3803,11 +3886,12 @@
 		"name": "Trapping Rain Water",
 		"difficulty": "H",
 		"url": "https://leetcode.com/problems/trapping-rain-water/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/trapping-rain-water-1587115621/1",
 		"locked": false,
 		"hints": [
-			"Water trapped at any bar is limited by the shorter of the tallest walls to its left and right.",
-			"Track running max-from-left and max-from-right as two pointers close in.",
-			"At each step, process the side with the smaller current max first — that side's water level is now decided."
+			"Water needs two walls taller than a valley floor. A decreasing stack can retain unresolved walls until a taller right wall arrives.",
+			"Store indices. While the current height exceeds the stack top's height, pop that valley floor. If the stack becomes empty, there is no left wall for this layer.",
+			"Otherwise, the new top is the left wall. Add (currentIndex - leftIndex - 1) * (min(leftHeight, currentHeight) - floorHeight), then continue popping. Each pop accounts for one newly bounded layer."
 		]
 	},
 	{
@@ -3901,6 +3985,7 @@
 		"name": "Valid Parentheses",
 		"difficulty": "E",
 		"url": "https://leetcode.com/problems/valid-parentheses/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/parenthesis-checker2744/1",
 		"locked": false,
 		"hints": [
 			"Every closing bracket must match the most recently opened one.",
@@ -4048,6 +4133,996 @@
 			"Simulating character-by-character placement is easier than deriving a closed-form index formula.",
 			"Track a current row and a direction (down or up), flipping direction at the top and bottom rows.",
 			"Append each character to a list of row-strings as you go, then join all rows at the end."
+		]
+	},
+	{
+		"id": "b47cdc19-eb01-47e9-8cae-b69dcf69d34f",
+		"code": "implement-stack-using-array",
+		"name": "Implement Stack using Array",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/implement-stack-using-array/1",
+		"locked": false,
+		"hints": [
+			"Only one end of the array needs to change. Track the position of the most recently pushed item.",
+			"Represent an empty stack with a top index of -1. Push advances top before writing; pop reads before decreasing top.",
+			"Check the empty and full conditions before touching the array. Follow the judge's required return value for an empty pop, and keep every operation O(1)."
+		]
+	},
+	{
+		"id": "8740ce92-4a99-4f4d-80bf-0713562fac0e",
+		"code": "reverse-a-string-using-stack",
+		"name": "Reverse a String using Stack",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/reverse-a-string-using-stack/1",
+		"locked": false,
+		"hints": [
+			"Push characters in their original order and consider which character will be popped first.",
+			"After pushing every character, repeatedly pop into a result buffer. No indexing trick is needed to reverse the order.",
+			"Join or return the buffer once, rather than repeatedly copying an immutable string. The stack approach takes O(n) time and O(n) extra space."
+		]
+	},
+	{
+		"id": "e2e3a638-8557-47c1-a982-ca61bb1466f8",
+		"code": "nearest-greater-to-left",
+		"name": "Nearest Greater to Left (NGL)",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/previous-greater-element/1",
+		"locked": false,
+		"hints": [
+			"Scan left to right. If the current value is at least as large as an older candidate, that older value cannot be the nearest greater answer for a future element.",
+			"Pop while the top is less than or equal to the current value. The remaining top is the answer; use -1 if the stack is empty, then push the current value.",
+			"Equal values are not strictly greater. Trace [2, 2, 3, 1] to get [-1, -1, -1, 3]. Each value is pushed and popped at most once, giving O(n) time."
+		]
+	},
+	{
+		"id": "8c2efecf-d407-449b-bd1a-04b2b1bc5d01",
+		"code": "next-greater-element",
+		"name": "Nearest Greater to Right (NGR)",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/next-larger-element-1587115620/1",
+		"locked": false,
+		"hints": [
+			"Reuse NGL, but scan right to left so the stack contains only candidates on the required side.",
+			"Pop candidates less than or equal to the current value. Read the remaining top or -1 before pushing the current value.",
+			"Write answers at the original indices. For [2, 1, 2, 4, 3], expect [4, 2, 4, -1, -1]; the second 2 does not count as greater than the first."
+		]
+	},
+	{
+		"id": "d78519cd-5bc0-41ff-87a8-83edbe5335bc",
+		"code": "nearest-smaller-to-left",
+		"name": "Nearest Smaller to Left (NSL)",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/previous-smaller-element/1",
+		"locked": false,
+		"hints": [
+			"Scan left to right as in NGL. This time a smaller current value makes older, greater or equal candidates unnecessary.",
+			"Pop while the top is greater than or equal to the current value. Read the top or -1, then push; the stack stays strictly increasing.",
+			"Find the nearest smaller value, not the smallest value in the prefix. For [1, 3, 2, 4], the answers are [-1, 1, 1, 2]."
+		]
+	},
+	{
+		"id": "201df5a5-25da-4c3a-970c-3c3b7f0ce0d7",
+		"code": "next-smaller-element",
+		"name": "Nearest Smaller to Right (NSR)",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/immediate-smaller-element1142/1",
+		"locked": false,
+		"hints": [
+			"Keep NSL's comparison and change the traversal to right to left. The desired neighbor need not be immediately adjacent.",
+			"Pop greater or equal values, read the top or -1, then push the current value. Preserve each result's original array position.",
+			"For [4, 8, 5, 2, 25], the answers are [2, 5, 2, -1, -1]. Repeat the exercise storing indices; histogram widths will need them."
+		]
+	},
+	{
+		"id": "b1997ff0-b2d6-4d06-bf1a-59b78184aa0b",
+		"code": "stock-span",
+		"name": "Stock Span",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/stock-span-problem-1587115621/1",
+		"locked": false,
+		"hints": [
+			"The span ends immediately after the nearest earlier day whose price is strictly higher. Today's price and equal earlier prices belong inside the span.",
+			"Use the NGL stack, storing day indices. Pop while the price at the top is less than or equal to today's price.",
+			"Span = todayIndex - previousGreaterIndex, using -1 when no greater price exists. For [100, 80, 60, 70, 60, 75, 85], expect [1, 1, 1, 2, 1, 4, 6]."
+		]
+	},
+	{
+		"id": "9308df98-be70-4e1c-8ed4-e87cbc3dd530",
+		"code": "maximal-rectangle",
+		"name": "Maximal Rectangle",
+		"difficulty": "H",
+		"url": "https://www.geeksforgeeks.org/problems/max-rectangle/1",
+		"locked": false,
+		"hints": [
+			"Consider rectangles whose bottom edge is the current row. Each column contributes the number of consecutive ones ending at that row.",
+			"Maintain one heights array: add one for a 1 and reset to zero for a 0. Run your maximum-area-histogram solver after updating each row.",
+			"Take the maximum over all row histograms. Reset the histogram solver's stack each time; the total cost is O(rows * columns) time and O(columns) extra space."
+		]
+	},
+	{
+		"id": "e42515d5-2212-431e-9520-14afd51f2f44",
+		"code": "next-greater-element-ii",
+		"name": "Next Greater Element in a Circular Array",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/next-greater-element/1",
+		"locked": false,
+		"hints": [
+			"A missing answer near the end may be near the beginning. Imagine reading the array twice without actually duplicating it.",
+			"Scan virtual indices from 2 * length - 1 down to zero, reading values at index modulo length. Pop less than or equal candidates as in NGR.",
+			"Write answers only during the second half of that reverse scan, when virtualIndex < length. Equal values and the element itself must not count as greater; all-equal input produces only -1."
+		]
+	},
+	{
+		"id": "208da8a2-c84f-4750-b75a-d10b46cd1f75",
+		"code": "sum-of-subarray-minimums",
+		"name": "Sum of Subarray Minimums",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/sum-of-subarray-minimum/1",
+		"locked": false,
+		"hints": [
+			"Count how many subarrays choose each element as their minimum, instead of enumerating every subarray.",
+			"Find the previous strictly smaller index and the next smaller-or-equal index. Using different equality rules assigns a subarray with tied minima to exactly one occurrence.",
+			"Add value * (index - leftBoundary) * (rightBoundary - index), with missing boundaries -1 and length. Use a wide accumulator; this GFG judge expects the full sum, without a modulo operation."
+		]
+	},
+	{
+		"id": "03761a8f-9ada-4b53-ba44-747b840ebfae",
+		"code": "implement-queue-using-array",
+		"name": "Implement Queue using Array",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/implement-queue-using-array/1",
+		"locked": false,
+		"hints": [
+			"Use separate front and rear positions: removing the oldest item does not require shifting every remaining item.",
+			"Enqueue at the rear and dequeue at the front. Track the number of stored items or use a consistent empty-state convention.",
+			"Respect the judge's fixed-capacity and empty-operation contract. When using circular indices, advance modulo capacity and distinguish full from empty with a size counter."
+		]
+	},
+	{
+		"id": "575fe687-b29b-418e-a818-685bfe577076",
+		"code": "implement-queue-using-linked-list",
+		"name": "Implement Queue using Linked List",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/implement-queue-using-linked-list/1",
+		"locked": false,
+		"hints": [
+			"Keep references to both ends. The front serves removals while the rear makes appending constant time.",
+			"For an empty queue, the new node becomes both front and rear. Otherwise link the current rear to it and advance rear.",
+			"On removal, advance front to its next node. If front becomes null, clear rear too; otherwise the next insertion may use a stale node."
+		]
+	},
+	{
+		"id": "0ec30331-aa16-40c6-ba00-9526d2e8cf65",
+		"code": "queue-reversal",
+		"name": "Reverse a Queue",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/queue-reversal/1",
+		"locked": false,
+		"hints": [
+			"A queue preserves arrival order, while a stack reverses it. Transfer the items between these structures.",
+			"Dequeue every item into a stack, then pop every item back into the queue. The former rear becomes the new front.",
+			"Every item moves twice, so time and auxiliary space are O(n). An empty or one-item queue needs no special rearrangement."
+		]
+	},
+	{
+		"id": "53a57433-ab0d-4c69-8700-9206c727fd05",
+		"code": "reverse-first-k-elements-of-queue",
+		"name": "Reverse First K Elements of a Queue",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/reverse-first-k-elements-of-queue/1",
+		"locked": false,
+		"hints": [
+			"Use full queue reversal's stack technique, but stop transferring after the first k items.",
+			"Pop those k items onto the queue's rear. At this point the untouched suffix is at the front, so the overall order is not finished yet.",
+			"Rotate exactly originalSize - k items from front to rear. For [1, 2, 3, 4, 5] with k = 3, the final queue is [3, 2, 1, 4, 5]."
+		]
+	},
+	{
+		"id": "f0f0a781-80de-46f0-bb2a-210f784fbd04",
+		"code": "interleave-queue-halves",
+		"name": "Interleave the Two Halves of a Queue",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/interleave-the-first-half-of-the-queue-with-second-half/1",
+		"locked": false,
+		"hints": [
+			"The problem supplies an even-length queue. Split it into two equal arrival-ordered halves without reversing either one.",
+			"Move the first half into a helper queue. For each helper item, append it to the original queue, then move the original queue's front item to its rear.",
+			"Repeat exactly half the original size times. [1, 2, 3, 4, 5, 6] becomes [1, 4, 2, 5, 3, 6], preserving each half's internal order."
+		]
+	},
+	{
+		"id": "dfc68ad5-d989-417a-be6f-66527f8760ef",
+		"code": "generate-binary-numbers",
+		"name": "Generate Binary Numbers",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/generate-binary-numbers-1587115620/1",
+		"locked": false,
+		"hints": [
+			"Treat each binary string as a node with two children: append 0 for one child and 1 for the other.",
+			"Start a queue with the string 1. Remove a string, add it to the answer, then enqueue its 0-child followed by its 1-child.",
+			"Stop after producing n answers. FIFO visits shorter strings first and equal-length strings in numeric order; account for string lengths when analyzing output size."
+		]
+	},
+	{
+		"id": "187a9411-574b-44ce-b1f7-dc616d81c684",
+		"code": "first-non-repeating-in-a-stream",
+		"name": "First Non-Repeating Character in a Stream",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/first-non-repeating-character-in-a-stream1216/1",
+		"locked": false,
+		"hints": [
+			"The earliest character that still occurs once is the answer. You need both arrival order and an up-to-date frequency count.",
+			"Increment each arriving character's count and enqueue it on its first occurrence. While the front's count exceeds one, discard that front.",
+			"After every character, output the front or # if no candidate remains. For aabc, the prefix answers are a#bb; no scanning of the entire prefix is necessary."
+		]
+	},
+	{
+		"id": "41706266-496d-43c5-9335-2e47969001f7",
+		"code": "first-negative-in-every-window",
+		"name": "First Negative in Every Window of Size K",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/first-negative-integer-in-every-window-of-size-k3345/1",
+		"locked": false,
+		"hints": [
+			"Nonnegative values cannot answer the query. Keep only the indices of negative values in their arrival order.",
+			"Before answering a window ending at the current index, discard queued indices less than currentIndex - k + 1.",
+			"Once the first full window exists, report the value at the front index, or 0 if the queue is empty. Each negative index enters and leaves once, giving O(n) time."
+		]
+	},
+	{
+		"id": "7c8f6b03-2bbb-4fca-a931-52fc53e9401e",
+		"code": "check-array-is-max-heap",
+		"name": "Check if an Array Is a Max Heap",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/does-array-represent-heap4345/1",
+		"locked": false,
+		"hints": [
+			"The array already represents a complete binary tree. Only the parent-child value constraint needs checking.",
+			"For a zero-based parent index, the children are at 2 * parent + 1 and 2 * parent + 2. Check only children that exist.",
+			"Every parent must be greater than or equal to both children; equality is valid. A single pass over non-leaf positions is O(n), and no sorting is needed."
+		]
+	},
+	{
+		"id": "c3cac217-a3c3-4843-ae4d-ff93b140a94a",
+		"code": "min-heap-implementation",
+		"name": "Implement a Min Heap",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/min-heap-implementation/1",
+		"locked": false,
+		"hints": [
+			"Keep the smallest value at the root. After one insertion or removal, only one path through the tree can violate heap order.",
+			"Append on push and sift up while the parent is larger. On pop, replace the root with the last value and sift down toward the smaller child.",
+			"Check both child bounds while sifting. Empty peek returns -1 for this judge; push and pop take O(log n), while peek and size take O(1)."
+		]
+	},
+	{
+		"id": "31889566-7c18-4a6c-a98e-d79751352bfd",
+		"code": "heap-sort",
+		"name": "Heap Sort",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/heap-sort/1",
+		"locked": false,
+		"hints": [
+			"For ascending in-place order, keep the largest active value at the root of a max-heap and move it to the array's end.",
+			"Build the heap by sifting down from the last non-leaf toward the root. Swap the root with the last active element, shrink the heap, and repair the root.",
+			"Pass the active heap size to sift-down so it never touches the sorted suffix. Bottom-up construction is O(n); all extractions together are O(n log n)."
+		]
+	},
+	{
+		"id": "f9fe1209-eaec-41df-9a53-fc18afb5ceb9",
+		"code": "kth-smallest-element-in-an-array",
+		"name": "Kth Smallest Element in an Array",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/kth-smallest-element5635/1",
+		"locked": false,
+		"hints": [
+			"Retain only the k smallest values seen so far. The largest retained value is the candidate to discard when something smaller arrives.",
+			"Use a max-heap of size at most k: push each value, then pop the root whenever the size exceeds k.",
+			"The final root is the kth smallest, including repeated occurrences. This costs O(n log k) time and O(k) space, without sorting the entire array."
+		]
+	},
+	{
+		"id": "d0fbab58-47e3-44d1-b159-6b2722decdfd",
+		"code": "sort-a-nearly-sorted-array",
+		"name": "Sort a Nearly Sorted Array",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/nearly-sorted-1587115620/1",
+		"locked": false,
+		"hints": [
+			"If each value is at most k positions away from its sorted position, the smallest remaining value must be among the next k + 1 candidates.",
+			"Seed a min-heap with the first min(k + 1, length) values. Repeatedly extract the minimum into the next output position and insert the next unseen value.",
+			"Drain the heap after all input is consumed. The heap stays bounded by k + 1, giving O(n log(k + 1)) time; k = 0 needs no rearrangement."
+		]
+	},
+	{
+		"id": "3410270c-b161-42f2-b424-4c480c27aae4",
+		"code": "merge-k-sorted-arrays",
+		"name": "Merge K Sorted Arrays",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/merge-k-sorted-arrays/1",
+		"locked": false,
+		"hints": [
+			"Only the first unconsumed value of each sorted array can be the next global minimum.",
+			"Store (value, arrayIndex, elementIndex) in a min-heap, initially using the first value of each nonempty array.",
+			"Pop the smallest tuple, append its value, and push the next value from that same array if present. For N total values and k arrays, time is O(N log k) with O(k) heap space."
+		]
+	},
+	{
+		"id": "521b523a-81a6-4d4b-9b21-947bae4af3c0",
+		"code": "minimum-cost-to-connect-ropes",
+		"name": "Minimum Cost to Connect Ropes",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/minimum-cost-of-ropes-1587115620/1",
+		"locked": false,
+		"hints": [
+			"A rope joined early contributes its length to later joins too. Avoid repeatedly charging a large length by combining the smallest available lengths first.",
+			"Put all lengths in a min-heap. Extract the two smallest, add their sum to the total cost, and push that combined length back.",
+			"Continue until only one rope remains. One initial rope costs zero; use a wide accumulator. Compare different first joins on [4, 3, 2, 6] to see why the minimum total is 29."
+		]
+	},
+	{
+		"id": "9069de63-37e2-462f-aec3-13090ebe7eac",
+		"code": "validate-stack-sequences",
+		"name": "Validate Stack Sequences",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/stack-permutations/1",
+		"locked": false,
+		"hints": [
+			"Push values in the required input order. At any moment, only the current stack top can be the next value in the requested output.",
+			"After each push, repeatedly pop while the top matches the next requested output value. Advance one output pointer for every successful match.",
+			"The sequence is valid only if every output value was matched and no values remain on the stack. Every input is pushed and popped at most once, so the simulation is linear."
+		]
+	},
+	{
+		"id": "edace29a-9cd6-48ac-ac10-b32f6a7a2c2b",
+		"code": "decode-string",
+		"name": "Decode String",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/decode-the-string2444/1",
+		"locked": false,
+		"hints": [
+			"A closing bracket completes the most recently opened repetition. Save the outer text and its repeat count before starting a nested substring.",
+			"Accumulate multi-digit counts. On an opening bracket, push the current prefix and count, then reset them; on closing, restore the prefix and append the decoded inner text the saved number of times.",
+			"Keep counts separate from text and reset a count after opening its frame. Size work and memory against the expanded output as well as the input, especially with nested repetitions."
+		]
+	},
+	{
+		"id": "f67ecb2d-f3e4-47ed-a087-ea8414e3dc0b",
+		"code": "insert-at-bottom-of-stack",
+		"name": "Insert at Bottom of a Stack",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/insert-an-element-at-the-bottom-of-a-stack/1",
+		"locked": false,
+		"hints": [
+			"The only accessible end is the top. Temporarily remove values until the stack is empty, where inserting at the top also inserts at the bottom.",
+			"Save one popped value in each recursive frame. After inserting the new bottom value, push those saved values back while returning from the calls.",
+			"Preserve the original order above the inserted value. Each existing value is removed and restored once, using O(n) time and O(n) recursive-call space."
+		]
+	},
+	{
+		"id": "3bac9b8a-2254-469a-888f-26967bf9b7c3",
+		"code": "reverse-a-stack",
+		"name": "Reverse a Stack Recursively",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/reverse-a-stack/1",
+		"locked": false,
+		"hints": [
+			"Assume recursion has reversed the stack without its top value. Where should the removed top go to finish reversing the original stack?",
+			"Pop one value, reverse the remaining stack, then reuse insertion at the bottom to place the saved value below the reversed remainder.",
+			"Stop at an empty stack. Bottom insertion costs linear time at each level, so this recursive technique is O(n squared), with O(n) maximum call depth rather than constant extra space."
+		]
+	},
+	{
+		"id": "b6328e4d-7bf5-4870-a4bf-09621f9579d2",
+		"code": "sort-a-stack",
+		"name": "Sort a Stack",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/sort-a-stack/1",
+		"locked": false,
+		"hints": [
+			"Recursively sort the stack after removing its top. The remaining task is to insert one saved value into an already sorted stack.",
+			"For largest-at-top order, pop larger values while inserting a smaller saved value, then restore those popped values. An empty stack is the insertion base case.",
+			"Define the requested top-to-bottom order before choosing the comparison and preserve duplicate values. Repeated sorted insertion is quadratic in the worst case and uses linear recursive space."
+		]
+	},
+	{
+		"id": "034a528f-2ed2-42d6-934f-1d8a604add89",
+		"code": "remove-k-digits",
+		"name": "Remove K Digits",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/remove-k-digits/1",
+		"locked": false,
+		"hints": [
+			"The earliest differing digit determines which equal-length number is smaller. A smaller incoming digit can improve the result by replacing a larger retained predecessor.",
+			"Maintain a digit stack and pop while its top exceeds the current digit and removals remain. Append the current digit after those removals.",
+			"If removals remain after scanning, remove digits from the end. Strip leading zeros only after consuming exactly k removals, and return 0 when no nonzero representation remains."
+		]
+	},
+	{
+		"id": "eaa562e1-152b-4c19-a305-d2ed5b1ab6ab",
+		"code": "asteroid-collision",
+		"name": "Asteroid Collision",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/asteroid-collision/",
+		"locked": false,
+		"hints": [
+			"A collision is possible only when a positive survivor is followed by a negative incoming asteroid. Two objects moving apart or in the same direction never collide.",
+			"Keep surviving asteroids in a stack. A negative arrival repeatedly removes smaller positive tops until it is destroyed, both equal-sized objects disappear, or no opposing top remains.",
+			"Track whether the incoming asteroid survived before pushing it. Equal magnitudes remove both objects, and one large arrival can trigger several consecutive collisions; each asteroid is removed at most once."
+		]
+	},
+	{
+		"id": "653ab228-adb7-4f44-8524-8bd9c37d88b0",
+		"code": "design-circular-deque",
+		"name": "Design a Circular Deque",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/implementation-of-deque-using-circular-array--174925/1",
+		"locked": false,
+		"hints": [
+			"Keep a front index and a size in a fixed-capacity array. Logical positions wrap around instead of requiring shifts.",
+			"The rear position is (front + size - 1) modulo capacity. Inserting at the front moves front backward; inserting at the rear writes at (front + size) modulo capacity.",
+			"Use (front - 1 + capacity) modulo capacity for backward wraparound. Distinguish empty from full using size, and return -1 for the judge's empty front or rear queries."
+		]
+	},
+	{
+		"id": "44d9ff71-856a-4ce2-b8dc-32a4d4258c57",
+		"code": "implement-stack-using-queues",
+		"name": "Implement Stack using Queues",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/stack-using-queue/1",
+		"locked": false,
+		"hints": [
+			"A stack must expose the newest item first, but a queue exposes the oldest. Rearrange the queue after insertion so its front becomes the new stack top.",
+			"Enqueue a new value, then rotate exactly the previously stored number of elements from front to rear. The inserted value is now at the front.",
+			"Pop becomes one dequeue, while push costs linear time. State this tradeoff explicitly; a two-queue version can instead make push cheap and pop expensive."
+		]
+	},
+	{
+		"id": "874caa4e-0ca4-4130-bbae-7a4c51deefe6",
+		"code": "design-minmax-queue",
+		"name": "Design a Min-Max Queue",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/design-minmax-queue/1",
+		"locked": false,
+		"hints": [
+			"Keep ordinary queue order separate from the candidates that can become a future minimum or maximum.",
+			"Alongside the FIFO queue, maintain increasing and decreasing deques. On enqueue, remove strictly worse values from their backs, preserving equal values as separate occurrences.",
+			"On dequeue, remove the outgoing value from a candidate deque's front when they match. The two fronts answer minimum and maximum in O(1); each value enters and leaves each deque once."
+		]
+	},
+	{
+		"id": "138ee7ee-7ae7-4d3b-b0f2-38d1b858ca4d",
+		"code": "kth-smallest-element-in-a-sorted-matrix",
+		"name": "Kth Smallest Element in a Sorted Matrix",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/",
+		"locked": false,
+		"hints": [
+			"Each row is a sorted stream. You only need the first k values of their combined sorted order, not a fully flattened and sorted matrix.",
+			"Heapify the first element of each row together with its row and column indices. After removing a value, insert the next element from that same row.",
+			"Stop at the kth removal and count duplicate occurrences separately. The heap holds at most one entry per row; a separate value-space binary-search solution counts matrix entries at most a trial value."
+		]
+	},
+	{
+		"id": "e46be361-d1c5-4149-91cd-9b559ee29a14",
+		"code": "reorganize-string",
+		"name": "Reorganize String",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/reorganize-string/",
+		"locked": false,
+		"hints": [
+			"The most frequent remaining character is the hardest one to place, but the character used immediately before it is temporarily forbidden.",
+			"Use a max-heap of character counts. Hold the previous character outside the heap until a different character has been selected, then reinsert it if occurrences remain.",
+			"If one frequency exceeds the ceiling of half the string length, no arrangement exists. Otherwise consume one occurrence per step and verify all occurrences were placed before returning the result."
+		]
+	},
+	{
+		"id": "32349fc6-7cc3-4d09-8b0f-9d44be237623",
+		"code": "sliding-window-median",
+		"name": "Sliding Window Median",
+		"difficulty": "H",
+		"url": "https://leetcode.com/problems/sliding-window-median/",
+		"locked": false,
+		"hints": [
+			"Reuse the lower and upper halves from stream median, but remove the value leaving the window as well as inserting the new arrival.",
+			"With heaps, record delayed deletions by value and track live sizes separately from heap lengths. Prune obsolete roots before reading or transferring them, then restore the size balance.",
+			"Handle duplicate outgoing values and average the two roots using a wide numeric type for even windows. Simple lazy heaps can retain O(n) buried stale entries; indexed heaps or balanced multisets can keep storage bounded by the window."
+		]
+	},
+	{
+		"id": "2db99954-6313-4739-8769-65f2eb70f583",
+		"code": "last-stone-weight-ii",
+		"name": "Last Stone Weight II",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/last-stone-weight-ii/",
+		"locked": false,
+		"hints": [
+			"A sequence of differences can be modeled as splitting the stone weights into two groups and minimizing the difference between their sums.",
+			"Find the largest reachable subset sum no greater than half the total weight. Use a descending-capacity 0/1 subset table so each stone participates once.",
+			"If that subset sum is chosen, the remaining group has total minus chosen, so the answer is total - 2 * chosen. The greedy strategy from Last Stone Weight does not establish this minimum."
+		]
+	},
+	{
+		"id": "ce5a1f36-4c42-4075-99f5-c90193501396",
+		"code": "unbounded-knapsack",
+		"name": "Unbounded Knapsack",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/knapsack-with-duplicate-items4201/1",
+		"locked": false,
+		"hints": [
+			"Taking an item does not remove that item type from future choices. The state must allow returning to it after reducing the remaining capacity.",
+			"In a one-dimensional table, process capacities upward for each item. A smaller capacity updated with that same item may now contribute another copy.",
+			"Use best[capacity] = max(best[capacity], value + best[capacity - weight]) when the item fits. Compare the loop direction with Book Shop to explain precisely why reuse is now allowed."
+		]
+	},
+	{
+		"id": "b5112828-8a8e-456f-8c5a-0f0a2928a19f",
+		"code": "rod-cutting",
+		"name": "Rod Cutting",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/rod-cutting0840/1",
+		"locked": false,
+		"hints": [
+			"Choosing a first piece leaves a shorter rod with the same pricing rules. Any piece length may be chosen repeatedly.",
+			"For each rod length, try every first-piece length that fits and combine its price with the best value for the remaining length.",
+			"An array entry at zero-based index length - 1 gives that piece's price. Set the empty rod's value to zero and consider the uncut rod as one valid choice, not as a special forbidden case."
+		]
+	},
+	{
+		"id": "17c196a5-9ed2-4468-abc7-3b8f693f1d2c",
+		"code": "unique-paths-ii",
+		"name": "Unique Paths II",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/unique-paths-ii/",
+		"locked": false,
+		"hints": [
+			"Reuse the count of ways to reach a cell from above or from the left. An obstacle deletes every path through that cell.",
+			"Set an obstacle's count to zero even in a compressed row table. Otherwise a stale value from the row above can incorrectly flow through the blocked cell.",
+			"Initialize the starting count only if the start is open. Test a blocked start, blocked destination, and a barrier in the first row or column before compressing the two-dimensional recurrence."
+		]
+	},
+	{
+		"id": "2fbaa77a-c7f0-425c-879c-03536e3e4123",
+		"code": "minimum-falling-path-sum",
+		"name": "Minimum Falling Path Sum",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/minimum-falling-path-sum/",
+		"locked": false,
+		"hints": [
+			"A cell can be reached from the previous row's same column or either adjacent column. The starting column is not fixed.",
+			"Initialize the first row with its cell values. For each later cell, add its value to the smallest valid predecessor total, treating out-of-bounds predecessors as impossible.",
+			"Compute a fresh row from the previous row so updates do not mix time steps. Return the minimum in the final row, and keep negative cell values rather than replacing them with zero."
+		]
+	},
+	{
+		"id": "3737dcc1-9eea-4bb8-9999-6194493b5e03",
+		"code": "longest-palindromic-subsequence",
+		"name": "Longest Palindromic Subsequence",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/longest-palindromic-subsequence-1612327878/1",
+		"locked": false,
+		"hints": [
+			"Characters may be skipped, but their original order must remain. Define the best palindrome length within each closed interval.",
+			"Matching endpoints contribute two plus the interior answer. Otherwise take the better result after dropping the left or right endpoint.",
+			"Initialize one-character intervals to one and empty intervals to zero, then fill by increasing length. This differs from longest palindromic substring, where dropping characters inside the answer is forbidden."
+		]
+	},
+	{
+		"id": "58446b1e-398b-49cd-a625-eea914a021d0",
+		"code": "best-time-to-buy-and-sell-stock-ii",
+		"name": "Best Time to Buy and Sell Stock II",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/",
+		"locked": false,
+		"hints": [
+			"Track the best profit while holding no stock and while holding one stock. Repeated transactions are allowed, but simultaneous ownership of multiple shares is not.",
+			"From yesterday's cash, either keep cash or buy; from yesterday's holding state, either keep holding or sell. Compute both new states from the old pair.",
+			"Return the final cash state. With no fee or cooldown, summing positive day-to-day differences is an equivalent greedy shortcut, but the state model extends more directly to the next variants."
+		]
+	},
+	{
+		"id": "8b2ff83c-e436-45ee-9e75-356219051d9d",
+		"code": "best-time-to-buy-and-sell-stock-with-transaction-fee",
+		"name": "Best Time to Buy and Sell Stock with Transaction Fee",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/buy-stock-with-transaction-fee/1",
+		"locked": false,
+		"hints": [
+			"Keep the holding and cash states from unlimited transactions. A fee changes a transition's value, not whether tomorrow's purchase is permitted.",
+			"Charge the fee on either the buy transition or the sell transition, consistently, but never on both. Compute the next cash and holding states from the previous pair.",
+			"Small price increases may no longer justify separate transactions. Return cash after the final day; an unrealized holding state is not a completed profitable sale."
+		]
+	},
+	{
+		"id": "1bffc46d-ba34-48f1-ab72-f5827fefd09f",
+		"code": "matrix-chain-multiplication",
+		"name": "Matrix Chain Multiplication",
+		"difficulty": "H",
+		"url": "https://www.geeksforgeeks.org/problems/matrix-chain-multiplication0303/1",
+		"locked": false,
+		"hints": [
+			"For a contiguous chain, choose the multiplication performed last. It combines two already computed subchains separated by a split position.",
+			"For matrices left through right, try each split: cost(left, split) + cost(split + 1, right) + dimensions[left - 1] * dimensions[split] * dimensions[right].",
+			"A single matrix costs zero multiplications. Fill smaller intervals first or memoize interval endpoints; an array of d dimensions represents d - 1 matrices, which is a common off-by-one trap."
+		]
+	},
+	{
+		"id": "58be2c45-2835-4634-b89e-9139b85fbc94",
+		"code": "palindrome-partitioning-ii",
+		"name": "Palindrome Partitioning II",
+		"difficulty": "H",
+		"url": "https://www.geeksforgeeks.org/problems/palindromic-patitioning4845/1",
+		"locked": false,
+		"hints": [
+			"Choose the last palindromic piece of a prefix. The best earlier partition can then be reused instead of enumerating every full partition.",
+			"Precompute palindrome intervals. For each ending position, try every start of a palindromic suffix and combine it with the minimum cuts of the preceding prefix.",
+			"A suffix starting at zero needs no cut; otherwise add one to the preceding prefix's answer. This avoids cubic repeated palindrome checks and yields a quadratic-time solution."
+		]
+	},
+	{
+		"id": "3a7e94ba-a244-4b6f-9698-2d8f541dc356",
+		"code": "move-zeroes",
+		"name": "Move Zeroes",
+		"difficulty": "E",
+		"url": "https://leetcode.com/problems/move-zeroes/",
+		"locked": false,
+		"hints": [
+			"Separate where you read from where the next nonzero value belongs. The written prefix should contain all nonzero values seen so far in their original order.",
+			"Scan left to right, copying each nonzero value to the next write position. After the scan, fill the remaining suffix with zeroes.",
+			"Only write into already processed positions, and never sort the array because that would destroy stable ordering. The method uses linear time and constant extra space."
+		]
+	},
+	{
+		"id": "ee8568f8-13bc-4ba6-838b-98422d9b6f90",
+		"code": "maximum-average-subarray-i",
+		"name": "Maximum Average Subarray I",
+		"difficulty": "E",
+		"url": "https://leetcode.com/problems/maximum-average-subarray-i/",
+		"locked": false,
+		"hints": [
+			"Every candidate window has the same length, so maximizing its average is equivalent to maximizing its sum.",
+			"Compute the first k-value sum once. For each following window, add the entering value and subtract the value that just left.",
+			"Initialize the best sum from the first real window rather than zero, since all values may be negative. Divide the final best sum by k using floating-point arithmetic."
+		]
+	},
+	{
+		"id": "f8a4e7f1-9af3-4899-8ba4-7b4d83450725",
+		"code": "merge-sort",
+		"name": "Merge Sort",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/merge-sort/1",
+		"locked": false,
+		"hints": [
+			"Sorting each half is a smaller instance of the same task. Once both halves are sorted, combine them with the two-pointer merge you already know.",
+			"Stop when a range has at most one element. Merge by repeatedly choosing the smaller unconsumed head, then append the remaining values from either half.",
+			"Use a reusable temporary buffer and copy the merged range back. Choosing the left value on equality preserves stability; balanced splitting gives O(n log n) time and O(n) auxiliary storage."
+		]
+	},
+	{
+		"id": "9c46e168-7c5a-4c94-9302-8ea0b5c011f6",
+		"code": "sort-colors",
+		"name": "Sort Colors",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/sort-colors/",
+		"locked": false,
+		"hints": [
+			"Maintain a zero prefix, a one region, an unexamined middle, and a two suffix. Three boundaries describe which positions still need work.",
+			"At the scan position, swap a zero toward the low boundary, advance over a one, and swap a two toward the high boundary.",
+			"After swapping with the high boundary, do not advance the scan pointer because the incoming value is still unclassified. Stop when the unknown region is empty."
+		]
+	},
+	{
+		"id": "f41d16e0-e714-48c6-85e7-7178b82cf564",
+		"code": "quick-sort",
+		"name": "Quick Sort",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/quick-sort/1",
+		"locked": false,
+		"hints": [
+			"Partition values around a pivot so each recursive call can ignore values already known to belong on the opposite side.",
+			"Maintain the chosen partition invariant while scanning, place the pivot correctly, and recursively sort ranges that exclude its finalized position.",
+			"Always shrink the recursive ranges. Randomized pivots improve expected behavior, while three-way partitioning helps repeated values; naive pivot choices can still lead to quadratic work on adversarial inputs."
+		]
+	},
+	{
+		"id": "be0af567-6b57-4735-b60b-2ab0712a376b",
+		"code": "search-insert-position",
+		"name": "Search Insert Position",
+		"difficulty": "E",
+		"url": "https://leetcode.com/problems/search-insert-position/",
+		"locked": false,
+		"hints": [
+			"Search for the first index whose value is at least the target, not just for an equal value. The array length is a valid insertion boundary.",
+			"With a half-open interval, move the left boundary past the middle when its value is smaller; otherwise retain the middle as a possible answer by moving the right boundary to it.",
+			"When the boundaries meet, return that index. Test targets before the first value, between values, equal to a value, and after the final value."
+		]
+	},
+	{
+		"id": "b9d4a642-ae3b-407c-9569-36587ef6d15f",
+		"code": "find-first-and-last-position-of-element-in-sorted-array",
+		"name": "Find First and Last Position of Element in Sorted Array",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/",
+		"locked": false,
+		"hints": [
+			"Finding one occurrence does not locate the duplicate range. Search independently for the first value at least the target and the first value greater than it.",
+			"Use lower-bound comparisons for the left edge and upper-bound comparisons for the exclusive right edge. Subtract one from the latter only after confirming the target exists.",
+			"If the lower bound is past the array or points to another value, return two -1 values. Two logarithmic searches handle an entire array of duplicates without a linear expansion."
+		]
+	},
+	{
+		"id": "005e68db-9916-467b-bc24-b77a55765fc4",
+		"code": "find-peak-element",
+		"name": "Find Peak Element",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/find-peak-element/",
+		"locked": false,
+		"hints": [
+			"Any peak is acceptable. With unequal neighboring values, an upward slope guarantees a peak somewhere on that side before the array boundary or a later downward turn.",
+			"Compare the middle value with its right neighbor. If the slope rises, discard the left half including the middle; otherwise retain the middle and search to its left.",
+			"Stop when one candidate index remains and return the index, not the value. The endpoint convention acts like negative infinity outside the array, so monotonic arrays still have a valid peak."
+		]
+	},
+	{
+		"id": "5a9a2f65-cf9b-43a1-b383-04e6ddf420f2",
+		"code": "search-a-2d-matrix-ii",
+		"name": "Search a 2D Matrix II",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/search-a-2d-matrix-ii/",
+		"locked": false,
+		"hints": [
+			"Sorted rows and columns do not imply the whole flattened matrix is sorted. Start at a corner where one direction increases values and the other decreases them.",
+			"From the top-right corner, a value larger than the target eliminates that column; a smaller value eliminates that row.",
+			"Move left or down until finding the target or leaving the matrix. Each step removes one row or column, giving O(rows + columns) time with constant extra space."
+		]
+	},
+	{
+		"id": "6cf2c99e-84ea-4c6b-a518-afff38c4c664",
+		"code": "middle-of-linked-list",
+		"name": "Middle of Linked List",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1",
+		"locked": false,
+		"hints": [
+			"Move a slow pointer one node and a fast pointer two nodes at a time. When the fast pointer reaches the end, the slow pointer has covered half the list.",
+			"Start both pointers at the head and continue while fast and fast.next exist. This convention lands on the second middle for an even-length list.",
+			"The GFG judge asks for the middle node's value, not its reference. Avoid dereferencing fast.next.next until the two required null checks have succeeded."
+		]
+	},
+	{
+		"id": "7ca8c4f6-0d4a-4bec-a9ed-244bc9fe477a",
+		"code": "linked-list-cycle-ii",
+		"name": "Linked List Cycle II",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/linked-list-cycle-ii/",
+		"locked": false,
+		"hints": [
+			"First determine whether fast and slow pointers meet. If the fast pointer reaches null, no cycle entry exists.",
+			"After a meeting, move one pointer back to the head. Advance both pointers by one node; their next meeting is the cycle's entry.",
+			"Compare node references rather than values and return the actual entry node. The distance from the head to the entry matches the appropriate remaining distance around the cycle modulo its length."
+		]
+	},
+	{
+		"id": "23316f61-98d7-41f5-bf3b-97612507dd05",
+		"code": "sort-list",
+		"name": "Sort List",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/sort-list/",
+		"gfgUrl": "https://www.geeksforgeeks.org/problems/sort-a-linked-list/1",
+		"locked": false,
+		"hints": [
+			"Merge sort fits linked lists because merging needs only forward pointers rather than indexed access to arbitrary positions.",
+			"Find a split with slow and fast pointers, cut the link between the halves, recursively sort them, and merge the two sorted chains.",
+			"Make both halves strictly smaller to avoid infinite recursion on two nodes. Top-down merging takes O(n log n) time with O(log n) call space; bottom-up merging can remove recursive stack usage."
+		]
+	},
+	{
+		"id": "7efc9dfb-b206-4032-9574-09a0b1c661ed",
+		"code": "reverse-doubly-linked-list",
+		"name": "Reverse a Doubly Linked List",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/reverse-a-doubly-linked-list/1",
+		"locked": false,
+		"hints": [
+			"Every node's forward and backward relationships exchange roles when the list is reversed. Both links must change together.",
+			"Save the original next node, swap the current node's next and previous pointers, then advance to the saved original next node.",
+			"The last processed node becomes the new head, whose previous pointer should be null. Check a one-node list and ensure following either direction traverses a consistent chain."
+		]
+	},
+	{
+		"id": "709c4b40-539d-49aa-b9a2-76105ab28be8",
+		"code": "binary-tree-preorder-traversal",
+		"name": "Binary Tree Preorder Traversal",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/preorder-traversal/1",
+		"locked": false,
+		"hints": [
+			"Preorder processes the current node before either subtree. The recursive order is node, left subtree, then right subtree.",
+			"The null-node case contributes nothing. Append each node's value once, then apply the same contract to its two children.",
+			"For an explicit stack, push the right child before the left child so LIFO visits the left first. Traversal takes O(n) time, while auxiliary stack usage depends on tree height."
+		]
+	},
+	{
+		"id": "06653904-98a4-4fba-9b7e-f65aef98247e",
+		"code": "binary-tree-inorder-traversal",
+		"name": "Binary Tree Inorder Traversal",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/inorder-traversal/1",
+		"locked": false,
+		"hints": [
+			"Inorder visits the left subtree, the current node, and then the right subtree. A node's value must wait until its left subtree is complete.",
+			"For the iterative version, push the full left chain, pop and visit one node, then continue from that node's right child.",
+			"An inorder traversal is sorted only when the input is a valid BST. Do not assume arbitrary binary-tree values satisfy that stronger ordering property."
+		]
+	},
+	{
+		"id": "15580541-de07-4d16-b651-b482c88ae9de",
+		"code": "binary-tree-postorder-traversal",
+		"name": "Binary Tree Postorder Traversal",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/postorder-traversal/1",
+		"locked": false,
+		"hints": [
+			"Postorder delays a node until both its left and right subtrees have finished. This is the natural order for combining child results.",
+			"Recursively traverse left, traverse right, then append the node's value. Return immediately for an empty child.",
+			"An iterative stack can store a visited flag to distinguish entering a node from returning to it after its children. The traversal remains linear even on a skewed tree."
+		]
+	},
+	{
+		"id": "d9437f68-1121-4371-b788-0e62eab2fb72",
+		"code": "insert-into-a-binary-search-tree",
+		"name": "Insert into a Binary Search Tree",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/insert-into-a-binary-search-tree/",
+		"locked": false,
+		"hints": [
+			"Compare the new value with the current node to choose exactly one subtree. The other subtree is already valid and needs no changes.",
+			"When the chosen child is empty, attach a new node there. In a recursive solution, return the updated subtree root so the parent's child link is preserved.",
+			"An empty input tree returns the newly created node. Work is proportional to tree height, which can be linear in an unbalanced BST; logarithmic height is not guaranteed."
+		]
+	},
+	{
+		"id": "7d9f20e0-a81b-4909-9c28-8ab8718b7a42",
+		"code": "delete-node-in-a-bst",
+		"name": "Delete Node in a BST",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/delete-node-in-a-bst/",
+		"locked": false,
+		"hints": [
+			"First use BST comparisons to find the target. Removing it must preserve both the remaining nodes and the ordering invariant.",
+			"A leaf becomes null, and a one-child node is replaced by its child. With two children, copy the inorder successor's value and remove that successor from the right subtree.",
+			"Return the updated subtree root at every step so deleting the original root is handled correctly. A missing key leaves the tree unchanged, and the search cost depends on tree height."
+		]
+	},
+	{
+		"id": "6b2c9ea0-7917-4e4a-8a37-84e6d0e8e230",
+		"code": "longest-common-prefix",
+		"name": "Longest Common Prefix",
+		"difficulty": "E",
+		"url": "https://leetcode.com/problems/longest-common-prefix/",
+		"locked": false,
+		"hints": [
+			"A shared prefix cannot be longer than the shortest word. Compare characters at the same position rather than looking for a substring elsewhere in a word.",
+			"Use the first word as a candidate and shorten it when another word disagrees, or scan columns until any word ends or differs.",
+			"Return an empty string on a first-character mismatch or an empty word. A trie becomes useful for repeated prefix queries, but is not required for this single comparison task."
+		]
+	},
+	{
+		"id": "85c2bce8-2ef5-4ab4-b28b-6dc95413b9a6",
+		"code": "count-words-in-trie",
+		"name": "Count Words in a Trie",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/count-words-in-a-trie/1",
+		"locked": false,
+		"hints": [
+			"A stored word corresponds to a terminal marker, not necessarily a leaf. A short word may share its full path with the start of a longer word.",
+			"Traverse every existing trie node and add one whenever its end-of-word flag is set, then include the totals from its children.",
+			"Do not count every visited prefix as a word or count an insertion frequency that the node structure does not store. This judge uses boolean terminal markers and counts the stored words represented by them."
+		]
+	},
+	{
+		"id": "101f81d5-e142-4a9b-83a0-79e48e7aefae",
+		"code": "delete-word-from-trie",
+		"name": "Delete a Word from a Trie",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/trie-delete/1",
+		"locked": false,
+		"hints": [
+			"Find the complete key and its terminal marker before changing anything. An existing prefix is not enough to establish that the word itself was inserted.",
+			"Clear the key's terminal flag. On the way back, remove a node only when it has no children and is not the end of another word.",
+			"Deleting the must preserve there, and deleting there must preserve a stored the. If the key is absent, leave the trie unchanged rather than pruning a partially matched path."
+		]
+	},
+	{
+		"id": "8ad0f21c-f317-4a0c-a51a-073977edbdad",
+		"code": "replace-words",
+		"name": "Replace Words",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/replace-words/",
+		"locked": false,
+		"hints": [
+			"Each dictionary root is a candidate prefix of a sentence word. The shortest matching root wins, so traversal can stop at the first terminal marker.",
+			"Insert dictionary roots into a trie. For each sentence word, follow characters until reaching a terminal node or a missing edge.",
+			"Return the collected prefix when a terminal is reached; otherwise keep the original word. Reassemble words with the required spacing and never replace using a root that appears only in the middle."
+		]
+	},
+	{
+		"id": "16c9e834-91de-43cf-bf79-a66bce5c4b90",
+		"code": "bellman-ford",
+		"name": "Bellman-Ford Shortest Paths",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/distance-from-the-source-bellman-ford-algorithm/1",
+		"locked": false,
+		"hints": [
+			"A shortest simple path uses at most vertexCount - 1 edges. Repeatedly relax every directed edge rather than finalizing the currently cheapest vertex as Dijkstra does.",
+			"Initialize only the source to zero and relax an edge only from a finite distance. Up to vertexCount - 1 full passes propagate all finite shortest paths when no reachable negative cycle exists.",
+			"An extra successful relaxation exposes a source-reachable negative cycle; use the judge's [-1] result then and 100000000 for unreachable vertices otherwise. A whole-graph cycle check, including disconnected components, requires a virtual source reaching every vertex."
+		]
+	},
+	{
+		"id": "722f333c-1e63-47b1-92c6-e430fa823a44",
+		"code": "floyd-warshall",
+		"name": "Floyd-Warshall All-Pairs Shortest Paths",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/implementing-floyd-warshall2042/1",
+		"locked": false,
+		"hints": [
+			"For each pair of endpoints, ask whether routing through one newly allowed intermediate vertex improves the best known distance.",
+			"Keep the intermediate-vertex loop outside both endpoint loops. Update distance[from][to] with the route through that intermediate only if both halves are finite.",
+			"This judge uses 100000000 for missing edges, not -1; negative edge weights are valid, and negative cycles are excluded. Modify the matrix in place, preserving the infinity sentinel for unreachable pairs."
+		]
+	},
+	{
+		"id": "b3075c99-e041-4fc1-bdb1-678412a2295e",
+		"code": "fractional-knapsack",
+		"name": "Fractional Knapsack",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/fractional-knapsack-1587115620/1",
+		"locked": false,
+		"hints": [
+			"Because items can be split, each unit of remaining capacity should receive the greatest available value per unit weight.",
+			"Sort by decreasing value-to-weight ratio, take whole items while they fit, then take the needed fraction of the next item.",
+			"Use floating-point ratios and accumulation rather than integer division. This greedy argument relies on divisibility and must not be copied to the 0/1 knapsack problem with indivisible items."
+		]
+	},
+	{
+		"id": "c8df26f8-f6d9-4e6f-96d8-2f81589bd568",
+		"code": "job-sequencing",
+		"name": "Job Sequencing with Deadlines",
+		"difficulty": "M",
+		"url": "https://www.geeksforgeeks.org/problems/job-sequencing-problem-1587115620/1",
+		"locked": false,
+		"hints": [
+			"All jobs take one time unit. Among jobs with deadlines no later than a given time, only that many jobs can fit, so retain the most profitable feasible subset.",
+			"Sort jobs by increasing deadline. Push each profit into a min-heap and remove the smallest profit whenever the retained count exceeds the current deadline.",
+			"The heap size is the selected job count and its sum is the maximum profit. This O(n log n) approach avoids scanning backward through every possible time slot for each job."
+		]
+	},
+	{
+		"id": "96278eaf-8da3-43f8-b63b-729c023ca1f8",
+		"code": "gcd-of-two-numbers",
+		"name": "GCD of Two Numbers",
+		"difficulty": "E",
+		"url": "https://www.geeksforgeeks.org/problems/gcd-of-two-numbers3459/1",
+		"locked": false,
+		"hints": [
+			"A common divisor of two values also divides the remainder when one is divided by the other. This lets you replace the larger argument without changing the answer.",
+			"Repeatedly replace the pair with the second value and the first value modulo the second, stopping when the second becomes zero.",
+			"Return the remaining nonzero value. The arguments shrink quickly, unlike checking every possible divisor; if extending to LCM, divide by the GCD before multiplying to reduce overflow risk."
+		]
+	},
+	{
+		"id": "f9eb45dc-e9c0-4d30-9db7-89dd90714788",
+		"code": "count-primes",
+		"name": "Count Primes",
+		"difficulty": "M",
+		"url": "https://leetcode.com/problems/count-primes/",
+		"locked": false,
+		"hints": [
+			"Testing every candidate with independent trial division repeats divisibility work. Mark composite numbers in a shared sieve instead.",
+			"For each still-prime candidate, mark its multiples starting from its square; smaller multiples were already handled by smaller prime factors.",
+			"Zero and one are not prime. Count unmarked values strictly below n, not through n inclusively, and stop choosing new marking primes once their square reaches n."
 		]
 	}
 ]

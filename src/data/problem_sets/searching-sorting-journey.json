@@ -1,0 +1,83 @@
+{
+	"slug": "searching-sorting-journey",
+	"title": "Sorting & Search Journey",
+	"description": "Merging, partitioning, binary-search boundaries, rotated arrays, matrices, and answer-space search.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Array indexing and two pointers",
+			"Basic recursion and comparison rules"
+		],
+		"outcome": "Maintain explicit partition and search-boundary invariants, then recognize when the answer space itself is monotonic.",
+		"connections": {
+			"merge-sorted-array": "Start by combining already sorted sequences. Writing backward avoids overwriting unread values when the first array also supplies the output buffer.",
+			"merge-sort": "Reuse merging after recursively sorting two halves. The merge invariant becomes the combine step of a divide-and-conquer sorting algorithm.",
+			"sort-colors": "Instead of merging, maintain regions with known membership. Three-way partitioning teaches exactly which section is processed and which positions still need inspection.",
+			"quick-sort": "Generalize partitioning around a pivot and recursively solve its remaining regions. Balanced partitions give good average behavior, while pivot choice and duplicates affect the worst case.",
+			"kth-largest-element-in-an-array": "Partitioning can select a rank without sorting both sides. Compare quickselect's one-sided recursion with the bounded-heap approach used in the Heap Journey.",
+			"binary-search": "Sorted order now lets an unsuccessful comparison discard half the candidates. Choose an interval convention and prove every update makes that interval smaller.",
+			"search-insert-position": "Change exact search into finding the first value at least the target. The insertion boundary still exists when the target itself is absent.",
+			"find-first-and-last-position-of-element-in-sorted-array": "Reuse boundary search twice for duplicates: once for the first value at least the target and once for the first value strictly greater than it.",
+			"sqrtx": "Search an implicit sorted sequence of candidate roots. The answer is the final candidate whose square does not exceed the input, with overflow-safe comparisons.",
+			"search-in-rotated-sorted-array": "Global ordering is broken at one pivot, but one half remains sorted. Identify that half before deciding whether the target can lie inside it.",
+			"find-minimum-in-rotated-sorted-array": "Reuse the rotation structure without a target value. Comparing the middle with the right boundary reveals which side still contains the minimum.",
+			"find-peak-element": "A whole array need not be sorted for a directional search. An upward slope guarantees some peak to the right, while a downward slope preserves a peak on the left side.",
+			"search-a-2d-matrix": "Flatten coordinates conceptually when each row starts after the previous row ends. That stronger ordering permits ordinary binary search over a virtual one-dimensional array.",
+			"search-a-2d-matrix-ii": "Remove the cross-row ordering guarantee while retaining sorted rows and columns. A corner comparison can eliminate one row or column, but flattening is no longer a valid binary-search reduction.",
+			"koko-eating-bananas": "Search a possible answer rather than an input position. Feasibility becomes monotonic in eating speed, so find the smallest speed that meets the time budget.",
+			"book-allocation-problem": "Reuse binary search on the answer with a more involved feasibility scan. A proposed maximum load is valid only if contiguous books can be assigned within the allowed number of students.",
+			"median-of-two-sorted-arrays": "Interview stretch: binary-search a partition in the smaller array. Its partner partition is determined by the required left-half size, and cross-boundary inequalities certify the median.",
+			"cses-1646": "Start range-query preprocessing with an immutable array. Prefix totals turn each inclusive interval sum into a difference between two already computed boundaries.",
+			"cses-1648": "Optional interview stretch: point assignments make rebuilding all prefix totals too expensive. A Fenwick tree updates and queries logarithmically by storing reusable binary-sized prefix blocks.",
+			"cses-1649": "Optional interview stretch: minimum cannot be recovered by subtracting prefix minima. A segment tree combines disjoint interval summaries and recomputes only the ancestors affected by a point update."
+		}
+	},
+	"topics": [
+		{
+			"name": "Merging, partitioning, and selection",
+			"description": "Build sorting from a combine step or partition invariant, then avoid unnecessary sorting for a rank query.",
+			"problemCodes": [
+				"merge-sorted-array",
+				"merge-sort",
+				"sort-colors",
+				"quick-sort",
+				"kth-largest-element-in-an-array"
+			]
+		},
+		{
+			"name": "Binary-search boundaries",
+			"description": "Separate exact matches, insertion points, duplicate ranges, and final feasible candidates.",
+			"problemCodes": [
+				"binary-search",
+				"search-insert-position",
+				"find-first-and-last-position-of-element-in-sorted-array",
+				"sqrtx"
+			]
+		},
+		{
+			"name": "Structured search spaces",
+			"description": "Identify which ordering guarantee remains before deciding what a comparison can eliminate.",
+			"problemCodes": [
+				"search-in-rotated-sorted-array",
+				"find-minimum-in-rotated-sorted-array",
+				"find-peak-element",
+				"search-a-2d-matrix",
+				"search-a-2d-matrix-ii"
+			]
+		},
+		{
+			"name": "Answer-space and partition search",
+			"description": "Prove feasibility is monotonic and use it to search capacities, rates, or balanced partitions.",
+			"problemCodes": [
+				"koko-eating-bananas",
+				"book-allocation-problem",
+				"median-of-two-sorted-arrays"
+			]
+		},
+		{
+			"name": "Optional stretch: range-query structures",
+			"description": "Progress from immutable prefix totals to point-updated Fenwick and segment-tree summaries.",
+			"problemCodes": ["cses-1646", "cses-1648", "cses-1649"]
+		}
+	]
+}

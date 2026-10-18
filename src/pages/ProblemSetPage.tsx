@@ -11,6 +11,7 @@ import {
 import { supabase, supabaseConfigError } from "../lib/supabase";
 
 const HldStudyView = lazy(() => import("./HldStudyView"));
+const JourneyStudyView = lazy(() => import("./JourneyStudyView"));
 
 export const ProblemSetPage = () => {
 	const { slug } = useParams();
@@ -22,6 +23,7 @@ export const ProblemSetPage = () => {
 	const [error, setError] = useState("");
 
 	useEffect(() => {
+		setError("");
 		const loadSolved = async () => {
 			if (!set || !user || !supabase) {
 				setSolvedCodes(new Set());
@@ -98,6 +100,29 @@ export const ProblemSetPage = () => {
 				<Header />
 				<h1>Problem set not found</h1>
 				<Link to="/">Browse problem sets</Link>
+			</div>
+		);
+	}
+
+	if (set.journey) {
+		return (
+			<div className="app-shell">
+				<Header />
+				{error && (
+					<p role="alert" className="dashboard-status-error">
+						{error}
+					</p>
+				)}
+				<Suspense fallback={<p role="status">Loading journey...</p>}>
+					<JourneyStudyView
+						key={set.slug}
+						set={set}
+						journey={set.journey}
+						solvedCodes={solvedCodes}
+						savingCodes={savingCodes}
+						onToggle={toggleSolved}
+					/>
+				</Suspense>
 			</div>
 		);
 	}

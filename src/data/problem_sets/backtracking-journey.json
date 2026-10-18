@@ -1,0 +1,64 @@
+{
+	"slug": "backtracking-journey",
+	"title": "Recursion & Backtracking Journey",
+	"description": "Recursive contracts, subsets, permutations, duplicate handling, constraints, and search pruning.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Functions, arrays, and base cases",
+			"Mutable state and copying values"
+		],
+		"outcome": "Define a recursive choice tree, restore shared state after each branch, and prune only when no valid completion remains.",
+		"connections": {
+			"powx-n": "Start with a recursive contract that reduces the problem rapidly. Compute one half-power and reuse it instead of evaluating the same recursive subproblem twice.",
+			"subsets": "Move from one recursive result to enumerating choices. Every item can be included or excluded, and an output snapshot must not alias the mutable path used by later branches.",
+			"combinations": "Restrict subset enumeration to a fixed number of choices. Increasing indices prevent reordered copies of the same combination, and remaining capacity can prune impossible branches.",
+			"permutations": "Now order matters, so a start index is insufficient. Track which positions are already used or swap choices into a fixed prefix, restoring changes after recursion.",
+			"subsets-ii": "Allow repeated input values without duplicating output subsets. Sorting lets you skip equal choices at the same recursion depth while still permitting repeated values along one path.",
+			"combination-sum": "Add a target total and allow a chosen candidate to be reused. Keeping the current choice index after selection distinguishes reusable choices from ordinary subsets.",
+			"combination-sum-ii": "Remove reuse while keeping duplicate input values. Advance the index after choosing an occurrence and skip equal siblings, not all later occurrences globally.",
+			"generate-parentheses": "Generate only prefixes that can still become balanced. Count opened and closed brackets; rejecting invalid prefixes early is stronger than generating every string and filtering afterward.",
+			"letter-combinations-of-a-phone-number": "Use one independent option set per position. A complete path chooses exactly one letter for each digit, and empty input needs the judge's empty-result behavior.",
+			"word-search": "Move the choice tree onto a board with adjacency constraints. Mark a cell only for the current path and restore it when leaving that branch.",
+			"palindrome-partitioning": "Choose whole substrings as edges of the search tree. Only palindromic pieces are legal, and precomputed palindrome tests can remove repeated validation work.",
+			"n-queens": "Track constraints that summarize all previous choices: occupied columns and diagonals. One queen per row fixes a dimension and prevents unnecessary permutations of identical placements.",
+			"sudoku-solver": "Interview stretch: combine reversible assignments with several simultaneous constraint sets. Choosing the empty cell with the fewest candidates can shrink the search dramatically without changing correctness."
+		}
+	},
+	"topics": [
+		{
+			"name": "Recursive contracts and choice trees",
+			"description": "Establish base cases, decreasing work, independent choices, and safe output snapshots.",
+			"problemCodes": [
+				"powx-n",
+				"subsets",
+				"combinations",
+				"permutations"
+			]
+		},
+		{
+			"name": "Duplicates, reuse, and target pruning",
+			"description": "Separate repeated values from repeated choices and prune only under valid numeric assumptions.",
+			"problemCodes": [
+				"subsets-ii",
+				"combination-sum",
+				"combination-sum-ii"
+			]
+		},
+		{
+			"name": "Constraint-aware generation",
+			"description": "Keep partial solutions valid while traversing string positions, board cells, or substring boundaries.",
+			"problemCodes": [
+				"generate-parentheses",
+				"letter-combinations-of-a-phone-number",
+				"word-search",
+				"palindrome-partitioning"
+			]
+		},
+		{
+			"name": "Constraint-solving capstones",
+			"description": "Maintain fast conflict checks and reversible assignments while searching larger state spaces.",
+			"problemCodes": ["n-queens", "sudoku-solver"]
+		}
+	]
+}

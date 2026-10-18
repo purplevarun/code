@@ -1,0 +1,48 @@
+{
+	"slug": "tries-journey",
+	"title": "Trie Journey",
+	"description": "Prefix comparison, trie design, terminal markers, deletion, wildcard queries, and word-search pruning.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Strings, maps, and tree traversal",
+			"Backtracking before the final board-search milestone"
+		],
+		"outcome": "Represent shared prefixes once, distinguish prefixes from complete words, and use the index to prune larger searches.",
+		"connections": {
+			"longest-common-prefix": "Start with the idea of shared prefixes before building a new data structure. Compare characters until the first disagreement or the end of the shortest word.",
+			"implement-trie-prefix-tree": "Store shared prefixes as tree paths. A terminal marker distinguishes a complete inserted word from a path that exists only because a longer word shares its prefix.",
+			"count-words-in-trie": "Traverse the structure you just built and count terminal markers, not leaves. A word can end at an internal node when it is also another word's prefix.",
+			"delete-word-from-trie": "Remove one word without removing shared prefixes needed by other words. Clearing the terminal marker and pruning unused nodes are separate responsibilities.",
+			"replace-words": "Use early terminal detection as a query operation. The first root-word endpoint encountered while traversing a sentence word is its shortest valid replacement.",
+			"design-add-and-search-words-data-structure": "Extend exact trie traversal with wildcard branching. A literal follows one edge, while a wildcard must consider every existing child at that depth.",
+			"word-search": "Learn the board-search state separately before combining it with the trie. A path consumes adjacent cells, and a cell is unavailable only for the current recursive path.",
+			"word-search-ii": "Combine board backtracking with prefix pruning. Advance a trie node alongside the board path, stop missing prefixes immediately, and deduplicate words found through multiple paths."
+		}
+	},
+	"topics": [
+		{
+			"name": "Prefixes and trie structure",
+			"description": "Build shared paths and distinguish internal prefix nodes from complete stored words.",
+			"problemCodes": [
+				"longest-common-prefix",
+				"implement-trie-prefix-tree",
+				"count-words-in-trie",
+				"delete-word-from-trie"
+			]
+		},
+		{
+			"name": "Prefix and wildcard queries",
+			"description": "Choose early stopping or controlled branching according to the query contract.",
+			"problemCodes": [
+				"replace-words",
+				"design-add-and-search-words-data-structure"
+			]
+		},
+		{
+			"name": "Prune a larger search",
+			"description": "Combine trie prefixes with reversible board-path state to avoid repeated searches.",
+			"problemCodes": ["word-search", "word-search-ii"]
+		}
+	]
+}

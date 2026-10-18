@@ -1,9 +1,9 @@
 # PurpleCode
 
-Track your DSA interview prep. Sign in, check off problems as you solve them across NeetCode 150 and a curated Top Interview Questions set, and climb the leaderboard.
+Learn DSA through 13 ordered interview journeys, from arrays and linked lists to graphs and dynamic programming. Sign in to track shared progress across every collection and climb the leaderboard.
 
 - ✅ NeetCode 150 problem coverage
-- ✅ Top Interview Questions set
+- 13 interview journeys with connected explanations, progressive hints, and topic icons
 - ✅ Username/password auth using a Supabase-backed `users` table
 - ✅ Leaderboard and progress tracking
 - ✅ Minimal dark/light mode UI
@@ -30,14 +30,14 @@ The app lives in a `purplecode` schema inside the shared supabase-common project
 
 Sync is additive — it only ever marks problems solved, never unmarks them. Configure per-platform usernames in Settings:
 
-| Provider | Coverage |
-| --- | --- |
-| Codeforces | Full history (`user.status` API) |
-| SPOJ | Full solved list (public profile) |
-| GeeksforGeeks | Full solved list (practice API) |
-| CodeChef | Full submission history (paginated scrape) |
-| LeetCode | ~20 most recent accepted (public API limit) |
-| CSES / NeetCode / CodeZym / HLD | Manual checkmarks only |
+| Provider                        | Coverage                                    |
+| ------------------------------- | ------------------------------------------- |
+| Codeforces                      | Full history (`user.status` API)            |
+| SPOJ                            | Full solved list (public profile)           |
+| GeeksforGeeks                   | Full solved list (practice API)             |
+| CodeChef                        | Full submission history (paginated scrape)  |
+| LeetCode                        | ~20 most recent accepted (public API limit) |
+| CSES / NeetCode / CodeZym / HLD | Manual checkmarks only                      |
 
 ## Required environment variables
 
@@ -111,10 +111,13 @@ it or delete it, it is not needed by the app.
 ## Useful scripts
 
 ```bash
-npm install
 ./run dev
-npm run build
+./run format --ignore-path .gitignore
+./run test
+./run build
 ```
+
+The format command above respects the existing ignore rules for generated output, dependencies, and private local backups. `./run test` first type-checks all tests using their Node-specific `tests/tsconfig.json`, then forwards arguments to Node's test runner; for example, `./run test tests/problem-data.test.ts` executes the catalog checks only.
 
 ## Problem data
 
@@ -135,6 +138,44 @@ Only free submissions belong in the collection; a free account may be required. 
 Access was audited on September 10, 2026 against LeetCode's public `paid_only` metadata, the GFG and Codeforces catalogs, CodeChef's practice API (judge enabled; login is the only reported submission restriction), NeetCode's free practice pages, and CSES task pages. Three unavailable CodeChef candidates were excluded. SPOJ uses its canonical classical problem URLs, but its browser-security challenge prevented automated live-page verification; no actual judge submissions were made during verification.
 
 Keep problem codes stable when correcting names or URLs because saved progress uses those codes. GFG practice links must use the exact `/problems/<slug>/1` URL; never derive slugs from titles or substitute search URLs. Use a verified free equivalent for premium LeetCode questions, not merely `locked: false`. Platform buttons display supplied practice links or supported HLD articles with their actual website labels.
+
+### Learning Journeys
+
+The dashboard follows a foundation-first order across 13 curricula:
+
+| Journey                  | Steps | Route                                 | Main coverage                                                                                                 |
+| ------------------------ | ----: | ------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Arrays & Strings         |    29 | `/#/sets/arrays-strings-journey`      | In-place updates, hashing, string encoding/KMP, prefix sums, two pointers, windows, matrices                  |
+| Sorting & Search         |    20 | `/#/sets/searching-sorting-journey`   | Merge/quick sort, selection, boundary search, rotations, answer-space search, optional range-query structures |
+| Linked List              |    16 | `/#/sets/linked-list-journey`         | Rewiring, fast/slow pointers, cycles, merging, random pointers, doubly linked lists, LRU                      |
+| Stack                    |    27 | `/#/sets/stack-journey`               | LIFO, parsing, recursion, nearest neighbors, spans, histogram/water, greedy simulation                        |
+| Queue                    |    19 | `/#/sets/queue-journey`               | Circular buffers, deques, emulation, streams, windows, min/max queues, BFS and dependencies                   |
+| Recursion & Backtracking |    13 | `/#/sets/backtracking-journey`        | Choice trees, subsets/permutations, duplicates, reuse, pruning, board search, constraints                     |
+| Trees & BST              |    24 | `/#/sets/trees-journey`               | DFS orders, subtree summaries, paths, levels, reconstruction, serialization, BST updates and iterators        |
+| Trie                     |     8 | `/#/sets/tries-journey`               | Shared prefixes, insertion, terminal counting, deletion, replacement, wildcards, board pruning                |
+| Heap                     |    22 | `/#/sets/heap-journey`                | Heap invariants, top-k, k-way merging, two heaps, expiry, scheduling, graph frontiers                         |
+| Graph                    |    23 | `/#/sets/graphs-journey`              | DFS/BFS, components, bipartiteness, union-find, topology, weighted paths, MSTs, Euler trails                  |
+| Greedy & Intervals       |    14 | `/#/sets/greedy-intervals-journey`    | Choice arguments, reachability, fractional selection, deadline scheduling, merging and overlap queries        |
+| Dynamic Programming      |    41 | `/#/sets/dynamic-programming-journey` | State design, 0/1 and unbounded knapsack, grids, subsequences, strings, stocks, interval DP, DAG memoization  |
+| Bits & Math              |    17 | `/#/sets/bits-math-journey`           | Carries, overflow, GCD, primality/sieve, XOR, bit width, common prefixes, fast exponentiation                 |
+
+The 273 ordered steps cover 262 unique problems and are organized into milestones, each with prerequisites, an outcome, and an original explanation connecting the exercise to earlier work. Every step has a direct free coding destination and three increasingly specific hints. The original stack progression remains intact: NGL -> NGR -> NSL -> NSR -> Stock Span -> Maximum Area Histogram (MAH) -> Trapping Rain Water. It is now one important pattern family within a broader stack curriculum, not the definition of the entire subject.
+
+Coverage was cross-checked against the [Tech Interview Handbook's topic inventory](https://www.techinterviewhandbook.org/algorithms/study-cheatsheet/) and the repository's existing interview-pattern collections. This is an original interview curriculum, not a copied course order or a claim to exhaust every possible interview question. Optional stretch steps include sliding-window median, regex matching, Sudoku, Euler trails, and Fenwick/segment-tree range queries. Specialized contest material such as FFT, advanced computational geometry, heavy-light decomposition, and optimized digit DP is not part of the core path. Read each journey's prerequisites; some advanced milestones deliberately reuse exercises from an earlier journey.
+
+The expansion adds 51 UUID-backed problem records while reusing existing identities wherever the exercise already exists. The master index also now includes the existing circular-queue design exercise, previously referenced only by LLD. Solved state remains keyed by the shared problem code, so completing or unmarking a reused exercise updates every collection containing it. Repeated appearances across journeys are teaching connections, not extra unique problems. No database or user migration is needed. Top Interview Questions remains accessible at `/#/sets/top-interview` but is not featured on the dashboard.
+
+The reader has a compact journey selector, topic-specific icons, numbered steps, milestone navigation, keyboard-operable hints, and Start/Continue links to the earliest unfinished step. All steps remain available, including after completion. Deep links such as `/#/sets/stack-journey?step=stock-span` work with GitHub Pages hash routing. Reading requires no sign-in; saving uses the existing progress flow.
+
+New destinations were reviewed on October 18, 2026 using the [GFG practice catalog](https://practiceapi.geeksforgeeks.org/api/vr/problems/?pageMode=explore&page=1&sortBy=submissions), [LeetCode's public free/paid metadata](https://leetcode.com/api/problems/all/), and targeted GFG/CSES statements. GFG alternatives are included only where a matching exercise is verified; unsupported matches are not replaced with search or editorial links. Every journey has GFG options, but not every interview exercise has a verified GFG counterpart. A free account may be required to submit, and no authenticated submissions were made during verification. Existing provider-history limits still apply; automatic sync currently indexes primary problem URLs, not alternate GFG links.
+
+Hints follow the linked judge: GFG subarray minimums uses the full sum, top-k frequency ties favor larger values, and kth-largest stream prefixes shorter than k return -1. Infix exponentiation is right-associative. Floyd-Warshall uses 100000000 for missing edges, and negative weights such as -1 remain valid. CSES dynamic range queries assign a value rather than adding it, and their query endpoints are one-based and inclusive. Related tasks are not assumed to have identical function signatures, output types, or equality rules.
+
+Catalog tests discover journeys dynamically, pin core topic families and the original teaching sequences, enforce three hints and one learning connection per step, and check icons, UUID uniqueness, free practice paths, and master-index inclusion. Progress tests cover early gaps, completion, duplicate references, and empty input with 100% line, branch, and function coverage in the progress module:
+
+```bash
+./run test --experimental-test-coverage --test-coverage-include=src/lib/progress.ts --test-coverage-lines=100 --test-coverage-branches=100 --test-coverage-functions=100 tests/progress.test.ts
+```
 
 ### LLD Judge Practice
 
@@ -181,5 +222,5 @@ Video provenance:
 Run the data and link regression checks with Node.js 22.6 or newer:
 
 ```bash
-node --experimental-strip-types --test tests/problem-data.test.ts
+./run test tests/problem-data.test.ts
 ```

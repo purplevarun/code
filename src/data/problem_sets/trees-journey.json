@@ -1,0 +1,89 @@
+{
+	"slug": "trees-journey",
+	"title": "Trees & BST Journey",
+	"description": "DFS orders, subtree summaries, BFS views, reconstruction, serialization, and BST operations.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Recursion and stack behavior",
+			"Linked nodes and queue basics"
+		],
+		"outcome": "Choose what flows down a tree and what each subtree returns, then exploit BST ordering only when it is guaranteed.",
+		"connections": {
+			"binary-tree-preorder-traversal": "Visit a node before its children to make the traversal order explicit. An iterative stack must push the right child first if the left child should be visited next.",
+			"binary-tree-inorder-traversal": "Move the visit between the recursive calls. The same recursion skeleton changes meaning, and in a BST this order exposes values in sorted sequence.",
+			"binary-tree-postorder-traversal": "Delay the visit until both children finish. This order is the foundation for computing a parent's answer from completed subtree summaries.",
+			"maximum-depth-of-binary-tree": "Replace postorder output with one returned value: subtree depth. Define the empty subtree's value so a leaf follows the same recurrence as every other node.",
+			"invert-binary-tree": "Change the tree structure while preserving the recursive contract for both children. Every node swaps its own left and right subtrees exactly once.",
+			"same-tree": "Traverse two trees together, comparing both structure and values. Null-versus-node mismatches are just as important as unequal values.",
+			"symmetric-tree": "Reuse paired traversal but compare opposite children. Structural symmetry is a mirror relationship, not equality of two ordinary inorder sequences.",
+			"diameter-of-binary-tree": "Return height upward but also evaluate a path joining both child branches. The best complete path and the value useful to a parent are different quantities.",
+			"balanced-binary-tree": "Reuse subtree heights with an early failure signal. Recomputing each height from scratch at every node would repeat work and can become quadratic.",
+			"path-sum": "Send a remaining target downward instead of returning only heights. A root-to-leaf condition must be checked at a leaf, not at an arbitrary prefix with the right sum.",
+			"binary-tree-maximum-path-sum": "Generalize diameter from edge counts to weighted sums. Return one extendable branch to the parent while considering two branches only for the completed answer at the current node.",
+			"subtree-of-another-tree": "Reuse Same Tree at candidate roots. Separate finding a candidate location from proving that the entire structure rooted there matches.",
+			"binary-tree-level-order-traversal": "Change the traversal frontier from a call stack to a queue. Snapshot each layer's size before enqueueing its children so levels remain distinct.",
+			"binary-tree-right-side-view": "Reuse level grouping and retain the final visible node from each level. Consistent left-to-right insertion makes the last value the right-side answer.",
+			"construct-binary-tree-from-preorder-and-inorder-traversal": "Combine the meanings of two DFS orders. Preorder identifies the root, and its inorder position separates the left and right subtrees; avoid repeatedly copying subarrays.",
+			"serialize-and-deserialize-binary-tree": "Preserve enough information to reconstruct shape as well as values. Null markers or equivalent structure metadata distinguish trees that share the same value-only traversal.",
+			"flatten-binary-tree-to-linked-list": "Use preorder as the required output order while rewiring pointers. Preserve the original right subtree before attaching the flattened left subtree so no nodes become unreachable.",
+			"lowest-common-ancestor-of-a-binary-tree": "Combine search results from two children. If both sides report a target, the current node joins the two paths; this does not require the values to be ordered.",
+			"validate-binary-search-tree": "Introduce the stronger BST invariant. Each node must satisfy bounds inherited from all ancestors, not only a comparison with its immediate parent.",
+			"insert-into-a-binary-search-tree": "Use BST comparisons to choose one child at each step. Preserve all untouched subtrees and attach the new value only when the selected search path reaches an empty child.",
+			"delete-node-in-a-bst": "Extend insertion's structural discipline to removal. Leaf, one-child, and two-child cases differ; the inorder successor can replace a two-child node while preserving ordering.",
+			"kth-smallest-element-in-a-bst": "Reuse inorder traversal as a sorted stream. Stop after the kth visit rather than sorting the whole tree or assuming subtree sizes are already available.",
+			"binary-search-tree-iterator": "Turn inorder traversal into a resumable interface. Retain the path to the next value in a stack instead of materializing every tree value at initialization.",
+			"lowest-common-ancestor-of-a-binary-search-tree": "Revisit LCA with the extra ordering guarantee. Both targets on one side choose one child; a split across the current value identifies the ancestor immediately."
+		}
+	},
+	"topics": [
+		{
+			"name": "DFS orders and recursive contracts",
+			"description": "Understand when a node is processed, then use the same traversal skeleton for structure and depth.",
+			"problemCodes": [
+				"binary-tree-preorder-traversal",
+				"binary-tree-inorder-traversal",
+				"binary-tree-postorder-traversal",
+				"maximum-depth-of-binary-tree",
+				"invert-binary-tree",
+				"same-tree",
+				"symmetric-tree"
+			]
+		},
+		{
+			"name": "Subtree summaries and paths",
+			"description": "Separate returned state, downward constraints, and a global answer that can join two branches.",
+			"problemCodes": [
+				"diameter-of-binary-tree",
+				"balanced-binary-tree",
+				"path-sum",
+				"binary-tree-maximum-path-sum",
+				"subtree-of-another-tree"
+			]
+		},
+		{
+			"name": "Levels, reconstruction, and structure",
+			"description": "Preserve tree shape while changing traversal order, representation, or pointer layout.",
+			"problemCodes": [
+				"binary-tree-level-order-traversal",
+				"binary-tree-right-side-view",
+				"construct-binary-tree-from-preorder-and-inorder-traversal",
+				"serialize-and-deserialize-binary-tree",
+				"flatten-binary-tree-to-linked-list",
+				"lowest-common-ancestor-of-a-binary-tree"
+			]
+		},
+		{
+			"name": "Binary search tree invariants",
+			"description": "Use global ordering bounds for validation, updates, ranked traversal, and ancestor queries.",
+			"problemCodes": [
+				"validate-binary-search-tree",
+				"insert-into-a-binary-search-tree",
+				"delete-node-in-a-bst",
+				"kth-smallest-element-in-a-bst",
+				"binary-search-tree-iterator",
+				"lowest-common-ancestor-of-a-binary-search-tree"
+			]
+		}
+	]
+}

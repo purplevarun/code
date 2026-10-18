@@ -1,0 +1,114 @@
+{
+	"slug": "stack-journey",
+	"title": "Stack Journey",
+	"description": "Stack design, expression parsing, recursion, monotonic boundaries, and greedy simulations.",
+	"access": "free",
+	"journey": {
+		"prerequisites": [
+			"Array traversal and indices",
+			"Loops and functions",
+			"Basic recursion before the recursive manipulation milestone"
+		],
+		"outcome": "Recognize pending-work stacks, parse nested expressions, and turn monotonic boundaries into spans, areas, and greedy decisions.",
+		"connections": {
+			"implement-stack-using-array": "Start with the contract: the last item pushed is the first item popped. Later problems will change what the stack stores, but not this rule.",
+			"reverse-a-string-using-stack": "Use your stack to reverse arrival order. This makes LIFO concrete before the next problem asks you to match nested pairs.",
+			"valid-parentheses": "Instead of reversing everything, remove only the latest unmatched opening bracket. The stack now represents unfinished work, not just stored values.",
+			"min-stack": "Attach useful information to each stack state: the minimum so far. This prepares you to ask what information a future query actually needs to retain.",
+			"validate-stack-sequences": "Use the same push/pop contract to simulate a proposed output order. The stack now certifies whether a sequence is achievable, rather than computing a minimum.",
+			"evaluate-reverse-polish-notation": "Replace unfinished brackets with unfinished arithmetic. A postfix operator consumes the two most recent operands, so operand order matters for subtraction and division.",
+			"infix-to-postfix-conversion": "Now produce the notation you just evaluated. Keep pending operators on a stack, resolving them by precedence, parentheses, and associativity rather than arrival order alone.",
+			"basic-calculator-ii": "Combine tokenization with the precedence rules from infix conversion. Finish multiplication and division before adding signed terms; multi-digit numbers require a parsing state.",
+			"decode-string": "Move from arithmetic precedence to nested contexts. Each opening bracket saves an outer prefix and repeat count; each closing bracket completes exactly one suspended frame.",
+			"simplify-path": "Use the nested-context idea without recursion. A parent-directory token cancels the most recent real directory, while repeated separators and current-directory tokens add no work.",
+			"insert-at-bottom-of-stack": "Begin explicit recursion by removing the top until the stack is empty, placing one value, then restoring saved values during unwinding. The call stack holds temporary state.",
+			"reverse-a-stack": "Reuse insertion at the bottom as a subroutine. Reverse the smaller stack recursively, then place the removed top underneath it; account for the nested linear work.",
+			"sort-a-stack": "Change only the reinsertion rule from recursive reversal. Insert a saved value into its sorted position while preserving the already sorted remainder of the stack.",
+			"nearest-greater-to-left": "Nearest Greater to Left (NGL) introduces a monotonic stack. Unlike Min Stack, discard smaller or equal candidates: the current value is closer and at least as useful to future queries.",
+			"next-greater-element": "Nearest Greater to Right (NGR) changes only the scan direction. Keep the same strict-greater comparison and traverse from right to left.",
+			"nearest-smaller-to-left": "Nearest Smaller to Left (NSL) returns to a left-to-right scan and reverses the comparison. You now have independent choices for direction and stack ordering.",
+			"next-smaller-element": "Nearest Smaller to Right (NSR) completes the four combinations. Together, NSL and NSR will locate both ends of a histogram rectangle.",
+			"stock-span": "Reuse NGL, but store indices instead of values. The distance to the previous strictly higher price counts consecutive days with prices no greater than today's.",
+			"largest-rectangle-in-histogram": "Maximum Area Histogram (MAH) combines NSL and NSR indices. Each bar supplies a height; its two smaller boundaries supply the widest legal rectangle.",
+			"trapping-rain-water": "Reuse the histogram's boundary reasoning, but measure empty space instead of solid bars. A decreasing stack closes a valley when a taller right wall arrives; do not reuse the histogram area formula unchanged.",
+			"maximal-rectangle": "Return to MAH and lift it into two dimensions. Consecutive ones in each column form a histogram for each matrix row, so your existing area solver becomes a subroutine.",
+			"next-greater-element-ii": "Return to NGR and allow wraparound. A virtual second traversal exposes circular neighbors without changing the monotonic-stack invariant.",
+			"daily-temperatures": "Return to a linear NGR scan, but report how far away the answer is. Retain unresolved indices, not just temperatures, so a warmer day can complete many waiting answers.",
+			"sum-of-subarray-minimums": "Generalize NSL and NSR from finding one rectangle to counting all subarrays owned by a minimum. Equal values need a consistent tie-break so each subarray is counted exactly once.",
+			"remove-k-digits": "Turn monotonic removal into a greedy decision with a budget. A smaller incoming digit can improve the earliest differing position by removing a larger retained digit.",
+			"asteroid-collision": "Keep the cancellation idea but abandon the monotonic-value assumption. Only a right-moving survivor followed by a left-moving arrival can collide; magnitude alone is insufficient.",
+			"car-fleet": "Finish with a sorted simulation: process cars from nearest to farthest from the target and keep only arrival times that create new fleets. Sorting makes the no-overtaking constraint usable."
+		}
+	},
+	"topics": [
+		{
+			"name": "LIFO foundations",
+			"description": "Build a stack, use its order, then enrich the state it carries.",
+			"problemCodes": [
+				"implement-stack-using-array",
+				"reverse-a-string-using-stack",
+				"valid-parentheses",
+				"min-stack",
+				"validate-stack-sequences"
+			]
+		},
+		{
+			"name": "Expressions and nested contexts",
+			"description": "Evaluate operands, order operators, and restore suspended parsing contexts.",
+			"problemCodes": [
+				"evaluate-reverse-polish-notation",
+				"infix-to-postfix-conversion",
+				"basic-calculator-ii",
+				"decode-string",
+				"simplify-path"
+			]
+		},
+		{
+			"name": "Recursive stack manipulation",
+			"description": "Build one reinsertion primitive, then reuse it for reversal and sorting.",
+			"problemCodes": [
+				"insert-at-bottom-of-stack",
+				"reverse-a-stack",
+				"sort-a-stack"
+			]
+		},
+		{
+			"name": "Four nearest-neighbor patterns",
+			"description": "Change one decision at a time: scan direction, then greater versus smaller.",
+			"problemCodes": [
+				"nearest-greater-to-left",
+				"next-greater-element",
+				"nearest-smaller-to-left",
+				"next-smaller-element"
+			]
+		},
+		{
+			"name": "Spans, area, and trapped water",
+			"description": "Convert boundary values into indices, widths, and bounded regions.",
+			"problemCodes": [
+				"stock-span",
+				"largest-rectangle-in-histogram",
+				"trapping-rain-water"
+			]
+		},
+		{
+			"name": "Transfer the pattern",
+			"description": "Reuse the same invariants in matrices, circular arrays, and contribution counting.",
+			"problemCodes": [
+				"maximal-rectangle",
+				"next-greater-element-ii",
+				"daily-temperatures",
+				"sum-of-subarray-minimums"
+			]
+		},
+		{
+			"name": "Greedy elimination and simulation",
+			"description": "Decide when removal is beneficial, physically possible, or implied by sorted order.",
+			"problemCodes": [
+				"remove-k-digits",
+				"asteroid-collision",
+				"car-fleet"
+			]
+		}
+	]
+}
