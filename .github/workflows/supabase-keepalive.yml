@@ -20,11 +20,10 @@ jobs:
                     exit 0
                   fi
 
-                  # A lightweight API ping counts as activity and prevents
-                  # the free-tier project from being paused. The bare /rest/v1/
-                  # root requires a secret key on the newer API gateway, so the
-                  # auth health endpoint is used instead (works with the
-                  # publishable key).
-                  curl -fsS "${SUPABASE_URL}/auth/v1/health" \
+                  # Must hit the database: daily 200s from /auth/v1/health did not
+                  # stop Supabase pausing the project (Nov 2026). Reads one row
+                  # from purplecode.users, which anon can select.
+                  curl -fsS "${SUPABASE_URL}/rest/v1/users?select=id&limit=1" \
                     -H "apikey: ${SUPABASE_KEY}" \
-                    -o /dev/null -w "Supabase auth ping: %{http_code}\n"
+                    -H "Accept-Profile: purplecode" \
+                    -o /dev/null -w "Supabase DB ping: %{http_code}\n"
